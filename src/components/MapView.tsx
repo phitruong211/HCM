@@ -364,7 +364,7 @@ export default function MapView({
     // Hover popup
     const popup = new mapboxgl.Popup({ closeButton: false, closeOnClick: false, className: "island-popup", offset: 12 });
 
-    const showIslandPopup = (e: mapboxgl.MapMouseEvent & { features?: mapboxgl.MapGeoJSONFeature[] }) => {
+    const showIslandPopup = (e: mapboxgl.MapMouseEvent & { features?: mapboxgl.MapboxGeoJSONFeature[] }) => {
       if (!e.features || e.features.length === 0) return;
       map.getCanvas().style.cursor = "pointer";
       const props = e.features[0].properties;
