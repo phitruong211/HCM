@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
@@ -115,6 +115,8 @@ export default function MapView({
   // Track all route coordinates drawn so far
   const routeCoordsRef = useRef<[number, number][]>([]);
 
+  const [mapStyle, setMapStyle] = useState("mapbox://styles/mapbox/light-v11");
+
   // ════════════════════════════════════════════
   // INIT MAP
   // ════════════════════════════════════════════
@@ -141,10 +143,18 @@ export default function MapView({
       "bottom-right"
     );
 
-    map.on("load", () => {
+    map.on("style.load", () => {
       mapLoadedRef.current = true;
-      addIslandLayers(map);
-      addRouteLine(map);
+      if (!map.getSource("route-line")) {
+        addIslandLayers(map);
+        addRouteLine(map);
+        
+        // Restore route/highlight data
+        if (routeCoordsRef.current.length > 0) {
+          const src = map.getSource("route-line") as mapboxgl.GeoJSONSource;
+          if (src) src.setData(makeLineGeoJSON(routeCoordsRef.current));
+        }
+      }
     });
 
     mapRef.current = map;
@@ -156,7 +166,16 @@ export default function MapView({
       mapRef.current = null;
       mapLoadedRef.current = false;
     };
-  }, []);
+  }, []); // Only run once on mount
+
+  // ════════════════════════════════════════════
+  // CHANGE MAP STYLE
+  // ════════════════════════════════════════════
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setStyle(mapStyle);
+    }
+  }, [mapStyle]);
 
   // ════════════════════════════════════════════
   // ROUTE LINE + TERRITORY HIGHLIGHT
@@ -537,9 +556,60 @@ export default function MapView({
     });
   }, [activeEvent, prevEvent, onTransitionDone, updateRouteLine, updateTerritoryHighlight, clearTerritoryHighlight]);
 
+  // Re-apply territory highlight when activeEvent changes or style reloads
+  useEffect(() => {
+    if (activeEvent && mapLoadedRef.current) {
+      updateTerritoryHighlight(activeEvent.coordinates, activeEvent.location);
+    }
+  }, [activeEvent, mapStyle, updateTerritoryHighlight]);
+
   return (
-    <div className="map-wrapper">
+    <div className="map-wrapper" style={{ position: "relative", width: "100%", height: "100%" }}>
       <div ref={mapContainerRef} className="map-container" />
+      
+      {/* Map Style Selector */}
+      <div 
+        style={{ 
+          position: "absolute", 
+          top: "16px", 
+          right: "16px", 
+          zIndex: 10,
+          background: "rgba(255, 255, 255, 0.9)",
+          padding: "8px 12px",
+          borderRadius: "8px",
+          boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px",
+          fontFamily: "'DIN Pro Medium', 'Arial', sans-serif",
+          backdropFilter: "blur(4px)"
+        }}
+      >
+        <label htmlFor="mapStyleSelect" style={{ fontSize: "14px", color: "#5a3e08", fontWeight: "bold" }}>
+          Bản đồ:
+        </label>
+        <select 
+          id="mapStyleSelect"
+          value={mapStyle} 
+          onChange={(e) => setMapStyle(e.target.value)}
+          style={{
+            padding: "4px 8px",
+            borderRadius: "4px",
+            border: "1px solid #c9a84c",
+            background: "#fff",
+            color: "#333",
+            fontSize: "14px",
+            outline: "none",
+            cursor: "pointer"
+          }}
+        >
+          <option value="mapbox://styles/mapbox/light-v11">Sáng (Mặc định)</option>
+          <option value="mapbox://styles/mapbox/dark-v11">Tối</option>
+          <option value="mapbox://styles/mapbox/satellite-streets-v12">Vệ tinh</option>
+          <option value="mapbox://styles/mapbox/outdoors-v12">Địa hình</option>
+          <option value="mapbox://styles/mapbox/streets-v12">Đường phố</option>
+        </select>
+      </div>
     </div>
   );
 }
