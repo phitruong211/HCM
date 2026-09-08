@@ -9,6 +9,8 @@ export interface HistoricalEvent {
   period: number;
   periodName: string;
   periodColor: string;
+  media: string; // path to image or video in /media/
+  mediaType: "image" | "video";
 }
 
 export interface Period {
@@ -71,6 +73,8 @@ export const events: HistoricalEvent[] = [
     period: 1,
     periodName: "Hình thành tư tưởng yêu nước",
     periodColor: "#d4a847",
+    media: "/media/evt-01.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-02",
@@ -83,6 +87,8 @@ export const events: HistoricalEvent[] = [
     period: 1,
     periodName: "Hình thành tư tưởng yêu nước",
     periodColor: "#d4a847",
+    media: "/media/evt-02.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-03",
@@ -95,6 +101,8 @@ export const events: HistoricalEvent[] = [
     period: 1,
     periodName: "Hình thành tư tưởng yêu nước",
     periodColor: "#d4a847",
+    media: "/media/evt-03.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-04",
@@ -108,6 +116,8 @@ export const events: HistoricalEvent[] = [
     period: 1,
     periodName: "Hình thành tư tưởng yêu nước",
     periodColor: "#d4a847",
+    media: "/media/evt-04.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-05",
@@ -120,6 +130,8 @@ export const events: HistoricalEvent[] = [
     period: 1,
     periodName: "Hình thành tư tưởng yêu nước",
     periodColor: "#d4a847",
+    media: "/media/evt-05.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-06",
@@ -133,6 +145,8 @@ export const events: HistoricalEvent[] = [
     period: 1,
     periodName: "Hình thành tư tưởng yêu nước",
     periodColor: "#d4a847",
+    media: "/media/evt-06.jpg",
+    mediaType: "image",
   },
 
   // ═══ GIAI ĐOẠN 2: 1911–1920 ═══
@@ -147,6 +161,8 @@ export const events: HistoricalEvent[] = [
     period: 2,
     periodName: "Tìm đường cứu nước",
     periodColor: "#c05746",
+    media: "/media/evt-07.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-08",
@@ -159,6 +175,8 @@ export const events: HistoricalEvent[] = [
     period: 2,
     periodName: "Tìm đường cứu nước",
     periodColor: "#c05746",
+    media: "/media/evt-08.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-09",
@@ -171,6 +189,8 @@ export const events: HistoricalEvent[] = [
     period: 2,
     periodName: "Tìm đường cứu nước",
     periodColor: "#c05746",
+    media: "/media/evt-09.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-10",
@@ -184,6 +204,8 @@ export const events: HistoricalEvent[] = [
     period: 2,
     periodName: "Tìm đường cứu nước",
     periodColor: "#c05746",
+    media: "/media/evt-10.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-11",
@@ -197,6 +219,8 @@ export const events: HistoricalEvent[] = [
     period: 2,
     periodName: "Tìm đường cứu nước",
     periodColor: "#c05746",
+    media: "/media/evt-11.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-12",
@@ -210,6 +234,8 @@ export const events: HistoricalEvent[] = [
     period: 2,
     periodName: "Tìm đường cứu nước",
     periodColor: "#c05746",
+    media: "/media/evt-12.jpg",
+    mediaType: "image",
   },
 
   // ═══ GIAI ĐOẠN 3: 1921–1930 ═══
@@ -224,6 +250,8 @@ export const events: HistoricalEvent[] = [
     period: 3,
     periodName: "Hình thành tư tưởng cách mạng",
     periodColor: "#7b6b8a",
+    media: "/media/evt-13.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-14",
@@ -236,6 +264,8 @@ export const events: HistoricalEvent[] = [
     period: 3,
     periodName: "Hình thành tư tưởng cách mạng",
     periodColor: "#7b6b8a",
+    media: "/media/evt-14.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-15",
@@ -248,6 +278,8 @@ export const events: HistoricalEvent[] = [
     period: 3,
     periodName: "Hình thành tư tưởng cách mạng",
     periodColor: "#7b6b8a",
+    media: "/media/evt-15.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-16",
@@ -260,6 +292,8 @@ export const events: HistoricalEvent[] = [
     period: 3,
     periodName: "Hình thành tư tưởng cách mạng",
     periodColor: "#7b6b8a",
+    media: "/media/evt-16.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-17",
@@ -273,6 +307,8 @@ export const events: HistoricalEvent[] = [
     period: 3,
     periodName: "Hình thành tư tưởng cách mạng",
     periodColor: "#7b6b8a",
+    media: "/media/evt-17.jpg",
+    mediaType: "image",
   },
 
   // ═══ GIAI ĐOẠN 4: 1930–1945 ═══
@@ -288,6 +324,8 @@ export const events: HistoricalEvent[] = [
     period: 4,
     periodName: "Vượt qua thử thách",
     periodColor: "#5a8a6c",
+    media: "/media/evt-18.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-19",
@@ -301,6 +339,8 @@ export const events: HistoricalEvent[] = [
     period: 4,
     periodName: "Vượt qua thử thách",
     periodColor: "#5a8a6c",
+    media: "/media/evt-19.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-20",
@@ -314,6 +354,8 @@ export const events: HistoricalEvent[] = [
     period: 4,
     periodName: "Vượt qua thử thách",
     periodColor: "#5a8a6c",
+    media: "/media/evt-20.jpg",
+    mediaType: "image",
   },
   {
     id: "evt-21",
@@ -327,6 +369,8 @@ export const events: HistoricalEvent[] = [
     period: 4,
     periodName: "Vượt qua thử thách",
     periodColor: "#5a8a6c",
+    media: "/media/evt-21.jpg",
+    mediaType: "image",
   },
 
   // ═══ GIAI ĐOẠN 5: 1945–1969 ═══
@@ -342,6 +386,8 @@ export const events: HistoricalEvent[] = [
     period: 5,
     periodName: "Phát triển & hoàn thiện",
     periodColor: "#4a7a9b",
+    media: "/media/evt-22.mp4",
+    mediaType: "video",
   },
   {
     id: "evt-23",
@@ -355,6 +401,8 @@ export const events: HistoricalEvent[] = [
     period: 5,
     periodName: "Phát triển & hoàn thiện",
     periodColor: "#4a7a9b",
+    media: "/media/evt-23.mp4",
+    mediaType: "video",
   },
   {
     id: "evt-24",
@@ -368,5 +416,7 @@ export const events: HistoricalEvent[] = [
     period: 5,
     periodName: "Phát triển & hoàn thiện",
     periodColor: "#4a7a9b",
+    media: "/media/evt-24.mp4",
+    mediaType: "video",
   },
 ];
