@@ -66,7 +66,7 @@ hcmData.events.forEach((e) => {
 export const markers: Marker[] = Array.from(uniqueLocations.values());
 
 // Map new events and provide backwards compatibility
-export const events: HistoricalEvent[] = hcmData.events.map((e) => {
+export const events: HistoricalEvent[] = hcmData.events.map((e, index) => {
   const markerId = `marker-${e.lat}-${e.lng}`;
   
   let detailsText = e.moTa;
@@ -91,7 +91,7 @@ export const events: HistoricalEvent[] = hcmData.events.map((e) => {
     title: e.tieuDe,
     description: e.moTa,
     markerId: markerId,
-    image: `/media/event-${e.thoiKy}.jpg`, // Use period for image fallback if needed
+    image: index < 10 ? `/media/event-${index + 1}.jpg` : `/media/event-${e.thoiKy}.jpg`, // Use specific images for first 10 events, fallback to period
     details: detailsText,
   };
 });
