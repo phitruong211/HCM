@@ -6,7 +6,7 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import * as turf from "@turf/turf";
 
 import type { HistoricalEvent } from "@/data/events";
-import { markers, getMarkerForEvent } from "@/data/events";
+import { markers, getMarkerForEvent, getEventsByMarker } from "@/data/events";
 import {
   largeIslandsGeoJSON,
   mediumIslandsGeoJSON,
@@ -25,6 +25,7 @@ interface MapViewProps {
   isPlaying: boolean;
   onMarkerClick: (markerId: string) => void;
   onTransitionDone: () => void;
+  activePeriodId: number;
 }
 
 // Route line source data helper
@@ -108,6 +109,7 @@ export default function MapView({
   isPlaying,
   onMarkerClick,
   onTransitionDone,
+  activePeriodId,
 }: MapViewProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
@@ -157,6 +159,20 @@ export default function MapView({
       map.remove();
       mapRef.current = null;
       mapLoadedRef.current = false;
+    };
+  }, []);
+
+  const getMapPadding = useCallback(() => {
+    if (typeof window === "undefined") return { left: 0, right: 0, top: 0, bottom: 0 };
+    const w = window.innerWidth;
+    if (w > 1500) {
+      return { left: 0, right: 0, top: 0, bottom: 0 };
+    }
+    return { 
+      left: Math.min(420, w * 0.3), 
+      right: Math.min(504, w * 0.3), 
+      top: 0, 
+      bottom: 0 
     };
   }, []);
 
@@ -373,7 +389,7 @@ export default function MapView({
 
     markers.forEach((markerData) => {
       const el = document.createElement("div");
-      el.className = "custom-marker";
+      el.className = markerData.isRegionLevel ? "custom-marker region-level" : "custom-marker";
       el.addEventListener("click", (e) => {
         e.stopPropagation();
         onMarkerClick(markerData.id);
@@ -385,6 +401,58 @@ export default function MapView({
       markersRef.current.set(markerData.id, marker);
     });
   }, [onMarkerClick]);
+
+  // Update marker visibility based on activePeriodId
+  useEffect(() => {
+    const map = mapRef.current;
+    if (!map || !mapLoadedRef.current) return;
+
+    // We don't flyTo/fitBounds if isPlaying because it would interrupt the animation
+    if (!isPlaying) {
+      const visibleMarkers = markers.filter((m) =>
+        getEventsByMarker(m.id).some((e) => e.thoiKy === activePeriodId)
+      );
+
+      if (visibleMarkers.length > 0) {
+        if (visibleMarkers.length === 1) {
+          map.flyTo({
+            center: visibleMarkers[0].coordinates,
+            zoom: 6,
+            duration: 1200,
+            padding: getMapPadding(),
+          });
+        } else {
+          const bounds = new mapboxgl.LngLatBounds();
+          visibleMarkers.forEach((m) => bounds.extend(m.coordinates));
+          const currentPadding = getMapPadding();
+          map.fitBounds(bounds, {
+            padding: { 
+              top: 60, 
+              bottom: 60, 
+              left: Math.max(380, currentPadding.left), 
+              right: Math.max(60, currentPadding.right) 
+            },
+            duration: 1200,
+            maxZoom: 7,
+          });
+        }
+      }
+    }
+
+    markersRef.current.forEach((marker, id) => {
+      const el = marker.getElement();
+      const hasEventInPeriod = getEventsByMarker(id).some(
+        (e) => e.thoiKy === activePeriodId
+      );
+      if (hasEventInPeriod) {
+        el.style.opacity = "1";
+        el.style.pointerEvents = "auto";
+      } else {
+        el.style.opacity = "0.2";
+        el.style.pointerEvents = "none";
+      }
+    });
+  }, [activePeriodId, isPlaying]);
 
   // Update active marker style based on active event's marker
   useEffect(() => {
@@ -401,6 +469,35 @@ export default function MapView({
       }
     });
   }, [activeEvent]);
+
+  // Re-center active marker on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      const map = mapRef.current;
+      if (!map || !mapLoadedRef.current || !activeEvent || animatingRef.current) return;
+      const marker = getMarkerForEvent(activeEvent);
+      if (marker) {
+        map.easeTo({
+          center: marker.coordinates,
+          padding: getMapPadding(),
+          duration: 300,
+        });
+      }
+    };
+    
+    // Add debounce to resize listener
+    let timeout: ReturnType<typeof setTimeout>;
+    const debouncedResize = () => {
+      clearTimeout(timeout);
+      timeout = setTimeout(handleResize, 150);
+    };
+
+    window.addEventListener("resize", debouncedResize);
+    return () => {
+      window.removeEventListener("resize", debouncedResize);
+      clearTimeout(timeout);
+    };
+  }, [activeEvent, getMapPadding]);
 
   // Clear route line when not playing
   useEffect(() => {
@@ -430,10 +527,8 @@ export default function MapView({
     const prevMarker = prevEvent ? getMarkerForEvent(prevEvent) : null;
 
     animatingRef.current = true;
-    const hasPrev = prevMarker !== null;
 
     if (prevMarker && prevMarker.id === activeMarker.id) {
-      // Same marker — don't animate camera, just show popup
       updateTerritoryHighlight(activeMarker.coordinates, activeMarker.name);
       animatingRef.current = false;
       onTransitionDone();
@@ -450,6 +545,7 @@ export default function MapView({
         duration: 2200,
         essential: true,
         curve: 1.8,
+        padding: getMapPadding(),
       });
       map.once("moveend", () => {
         routeCoordsRef.current = [activeMarker.coordinates];
@@ -465,125 +561,124 @@ export default function MapView({
 
     clearTerritoryHighlight();
 
-    if (!isPlaying) {
-      // User clicked timeline manually: fly directly without progressive drawing
-      const dx = activeMarker.coordinates[0] - prevMarker.coordinates[0];
-      const dy = activeMarker.coordinates[1] - prevMarker.coordinates[1];
-      const dist = Math.sqrt(dx * dx + dy * dy);
-
-      let zoomOut = dist > 50 ? 2.8 : dist > 15 ? 3.8 : dist > 5 ? 5 : dist > 1.5 ? 6.5 : 8;
-      const bearingShift = dist > 5 ? (dx > 0 ? 12 : -12) : 0;
-      const midLng = (prevMarker.coordinates[0] + activeMarker.coordinates[0]) / 2;
-      const midLat = (prevMarker.coordinates[1] + activeMarker.coordinates[1]) / 2;
-
-      map.flyTo({
-        center: [midLng, midLat],
-        zoom: zoomOut,
-        pitch: 45,
-        bearing: bearingShift,
-        duration: 1000,
-        essential: true,
-      });
-
-      map.once("moveend", () => {
-        map.flyTo({
-          center: activeMarker.coordinates,
-          zoom: 11,
-          pitch: 0,
-          bearing: 0,
-          duration: 1200,
-          essential: true,
-        });
-
-        map.once("moveend", () => {
-          updateTerritoryHighlight(activeMarker.coordinates, activeMarker.name);
-          animatingRef.current = false;
-          onTransitionDone();
-        });
-      });
-      return;
-    }
-
     // ── Calculate Great Circle Arc ──
-
     const startPt = turf.point(prevMarker.coordinates);
     const endPt = turf.point(activeMarker.coordinates);
-    
-    // Create an arc using greatCircle (handles shortest path over the globe)
     let arcCoords: [number, number][] = [];
     try {
       const arc = turf.greatCircle(startPt, endPt);
       const arcLength = turf.length(arc as any);
-      // Constant speed: ~15km per frame. 60fps = 900km/s. Min 2 seconds (120 frames).
       const numSteps = Math.max(120, Math.floor(arcLength / 15)); 
       for (let i = 0; i <= numSteps; i++) {
         const segment = turf.along(arc as any, (i * arcLength) / numSteps);
         arcCoords.push(segment.geometry.coordinates as [number, number]);
       }
     } catch (e) {
-      // Fallback if greatCircle fails (e.g., points are antipodal)
       arcCoords = [prevMarker.coordinates, activeMarker.coordinates];
     }
     const numSteps = arcCoords.length - 1;
-
-    // Step 2: Fixed duration of 5 seconds (5000ms) for all transitions
-    const duration = 5000;
-
-    // Native flyTo (zooms out and back in natively)
-    map.flyTo({
-      center: activeMarker.coordinates,
-      zoom: 11,
-      duration: duration,
-      curve: 1.2, // Adds a slight zoom out effect
-      essential: true,
-    });
-
     const baseCoords = [...routeCoordsRef.current];
     if (baseCoords.length === 0) {
       baseCoords.push(prevMarker.coordinates);
     }
 
-    const startTime = performance.now();
+    // Sequence Step 1: fitBounds to see both A and B
+    const bounds = new mapboxgl.LngLatBounds();
+    bounds.extend(prevMarker.coordinates);
+    bounds.extend(activeMarker.coordinates);
 
-    function animateLine(now: number) {
-      const currentMap = mapRef.current;
-      if (!currentMap || !activeMarker) return;
+    if (!isPlaying) {
+      // Manual click: skip line drawing and fitBounds, fly directly to destination
+      map.flyTo({
+        center: activeMarker.coordinates,
+        zoom: 11,
+        pitch: 0,
+        bearing: 0,
+        duration: 1500,
+        essential: true,
+        padding: getMapPadding(),
+      });
 
-      const progress = Math.min((now - startTime) / duration, 1);
-      const currentStep = Math.floor(progress * numSteps);
-
-      if (progress >= 1) {
-        // Finished drawing
-        routeCoordsRef.current = [...baseCoords, ...arcCoords];
-        const finalSrc = currentMap.getSource("route-line") as mapboxgl.GeoJSONSource;
-        if (finalSrc) {
-          finalSrc.setData(makeLineGeoJSON(routeCoordsRef.current));
-        }
-        
+      map.once("moveend", () => {
         updateTerritoryHighlight(activeMarker.coordinates, activeMarker.name);
         animatingRef.current = false;
         onTransitionDone();
-        return;
-      }
+      });
+      return;
+    }
 
-      // Update line source
-      const currentLine = [...baseCoords, ...arcCoords.slice(0, currentStep + 1)];
-      const src = currentMap.getSource("route-line") as mapboxgl.GeoJSONSource;
-      if (src) {
-        src.setData(makeLineGeoJSON(currentLine));
+    // Auto-play: fit bounds -> draw line -> zoom in
+    const pad = getMapPadding();
+    map.fitBounds(bounds, {
+      padding: { 
+        top: 100, 
+        bottom: 100, 
+        left: Math.max(100, pad.left + 50), 
+        right: Math.max(100, pad.right + 50) 
+      },
+      duration: 1200,
+      maxZoom: 9, // Prevent over-zooming on short distances
+      essential: true,
+    });
+
+    map.once("moveend", () => {
+      // Sequence Step 2: Draw the line
+      const duration = 3000; // 3s for auto-play
+      const startTime = performance.now();
+
+      function animateLine(now: number) {
+        const currentMap = mapRef.current;
+        if (!currentMap || !activeMarker) return;
+
+        const progress = Math.min((now - startTime) / duration, 1);
+        const currentStep = Math.floor(progress * numSteps);
+
+        if (progress >= 1) {
+          // Finished drawing
+          routeCoordsRef.current = [...baseCoords, ...arcCoords];
+          const finalSrc = currentMap.getSource("route-line") as mapboxgl.GeoJSONSource;
+          if (finalSrc) {
+            finalSrc.setData(makeLineGeoJSON(routeCoordsRef.current));
+          }
+          
+          // Sequence Step 3: Zoom in to target
+          currentMap.flyTo({
+            center: activeMarker.coordinates,
+            zoom: 11,
+            pitch: 0,
+            bearing: 0,
+            duration: 1200,
+            essential: true,
+            padding: getMapPadding(),
+          });
+
+          currentMap.once("moveend", () => {
+            updateTerritoryHighlight(activeMarker.coordinates, activeMarker.name);
+            animatingRef.current = false;
+            onTransitionDone();
+          });
+          return;
+        }
+
+        // Update line source
+        const currentLine = [...baseCoords, ...arcCoords.slice(0, currentStep + 1)];
+        const src = currentMap.getSource("route-line") as mapboxgl.GeoJSONSource;
+        if (src) {
+          src.setData(makeLineGeoJSON(currentLine));
+        }
+
+        animationRef.current = requestAnimationFrame(animateLine);
       }
 
       animationRef.current = requestAnimationFrame(animateLine);
-    }
-
-    animationRef.current = requestAnimationFrame(animateLine);
+    });
 
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
     };
-  }, [activeEvent, prevEvent, isPlaying, onTransitionDone, clearTerritoryHighlight, updateTerritoryHighlight, updateRouteLine]);
+  }, [activeEvent, prevEvent, isPlaying, getMapPadding, onTransitionDone, clearTerritoryHighlight, updateTerritoryHighlight]);
 
   return (
     <div className="map-wrapper">

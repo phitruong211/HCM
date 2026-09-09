@@ -26,7 +26,9 @@ export default function Home() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timelineCollapsed, setTimelineCollapsed] = useState(false);
-  const [showValuesModal, setShowValuesModal] = useState(false);
+
+  const [activePeriodId, setActivePeriodId] = useState<number>(1);
+
 
   const playTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const playIndexRef = useRef(0);
@@ -38,6 +40,7 @@ export default function Home() {
       setShowPopup(false);
       setPrevEvent(isFirstEvent ? null : activeEvent);
       setActiveEvent(event);
+      setActivePeriodId(event.thoiKy);
       setIsTransitioning(true);
     },
     [activeEvent, isTransitioning]
@@ -81,6 +84,7 @@ export default function Home() {
       setShowPopup(false);
       setPrevEvent(activeEvent);
       setActiveEvent(event);
+      setActivePeriodId(event.thoiKy);
       setTimeout(() => {
         setShowPopup(true);
       }, 100);
@@ -185,6 +189,7 @@ export default function Home() {
         isPlaying={isPlaying}
         onMarkerClick={handleMarkerClick}
         onTransitionDone={handleTransitionDone}
+        activePeriodId={activePeriodId}
       />
 
       {/* Hero */}
@@ -199,6 +204,8 @@ export default function Home() {
           onPlayToggle={handlePlayToggle}
           collapsed={timelineCollapsed}
           onToggleCollapse={() => setTimelineCollapsed(!timelineCollapsed)}
+          activePeriodId={activePeriodId}
+          onPeriodChange={setActivePeriodId}
         />
       )}
 
