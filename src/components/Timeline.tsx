@@ -1,14 +1,11 @@
 "use client";
 
-import { events, periods, type HistoricalEvent } from "@/data/events";
-import PeriodFilter from "./PeriodFilter";
+import { events, markers, type HistoricalEvent } from "@/data/events";
 
 interface TimelineProps {
   activeEventId: string | null;
-  activePeriods: number[];
   isPlaying: boolean;
   onEventClick: (event: HistoricalEvent) => void;
-  onTogglePeriod: (periodId: number) => void;
   onPlayToggle: () => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
@@ -16,23 +13,12 @@ interface TimelineProps {
 
 export default function Timeline({
   activeEventId,
-  activePeriods,
   isPlaying,
   onEventClick,
-  onTogglePeriod,
   onPlayToggle,
   collapsed,
   onToggleCollapse,
 }: TimelineProps) {
-  const filteredEvents = events.filter((e) => activePeriods.includes(e.period));
-  const groupedByPeriod = periods
-    .filter((p) => activePeriods.includes(p.id))
-    .map((period) => ({
-      period,
-      events: filteredEvents.filter((e) => e.period === period.id),
-    }))
-    .filter((g) => g.events.length > 0);
-
   return (
     <div className={`timeline-panel ${collapsed ? "collapsed" : ""}`}>
       <button
@@ -46,14 +32,9 @@ export default function Timeline({
       <div className="timeline-header">
         <div className="timeline-header-title">Dòng thời gian</div>
         <div className="timeline-header-subtitle">
-          Các sự kiện lịch sử quan trọng
+          Hành trình tư tưởng Hồ Chí Minh
         </div>
       </div>
-
-      <PeriodFilter
-        activePeriods={activePeriods}
-        onTogglePeriod={onTogglePeriod}
-      />
 
       <div className="play-controls">
         <button
@@ -90,52 +71,44 @@ export default function Timeline({
       </div>
 
       <div className="timeline-events">
-        {groupedByPeriod.map(({ period, events: periodEvents }) => (
-          <div key={period.id} className="timeline-period-group">
-            <div className="timeline-period-header">
-              <div
-                className="timeline-period-label"
-                style={{ color: period.color }}
-              >
-                <span
-                  className="timeline-period-dot"
-                  style={{ backgroundColor: period.color }}
-                />
-                {period.name}
-              </div>
-              <div className="timeline-period-range">{period.timeRange}</div>
-            </div>
-
-            {periodEvents.map((event) => (
-              <div
-                key={event.id}
-                className={`timeline-event-item ${
+        {events.map((event) => {
+          const marker = markers.find((m) => m.id === event.markerId);
+          return (
+            <div
+              key={event.id}
+              className={`timeline-event-item ${
+                activeEventId === event.id ? "active" : ""
+              }`}
+              onClick={() => onEventClick(event)}
+            >
+              <span
+                className={`timeline-event-marker ${
                   activeEventId === event.id ? "active" : ""
                 }`}
-                onClick={() => onEventClick(event)}
-              >
-                <span
-                  className="timeline-event-marker"
-                  style={
-                    activeEventId === event.id
-                      ? {
-                          borderColor: event.periodColor,
-                          backgroundColor: event.periodColor,
-                        }
-                      : {}
-                  }
-                />
-                <div className="timeline-event-info">
-                  <div className="timeline-event-year">
-                    {event.year}
-                    {event.month ? ` / ${String(event.month).padStart(2, "0")}` : ""}
+              />
+              <div className="timeline-event-info">
+                <div className="timeline-event-year">{event.yearLabel}</div>
+                <div className="timeline-event-title">{event.title}</div>
+                {marker && (
+                  <div className="timeline-event-location">
+                    <svg
+                      width="10"
+                      height="10"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                    >
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    {marker.name}
                   </div>
-                  <div className="timeline-event-title">{event.title}</div>
-                </div>
+                )}
               </div>
-            ))}
-          </div>
-        ))}
+            </div>
+          );
+        })}
       </div>
     </div>
   );

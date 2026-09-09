@@ -1,14 +1,19 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
 import type { HistoricalEvent } from "@/data/events";
-import { events } from "@/data/events";
+import { events, markers, getEventsByMarker } from "@/data/events";
+import ReactMarkdown from "react-markdown";
+import { X, Maximize2, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
+import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 interface EventPopupProps {
   event: HistoricalEvent;
   onClose: () => void;
   onNext: () => void;
   onPrev: () => void;
+  onSelectEvent: (event: HistoricalEvent) => void;
 }
 
 export default function EventPopup({
@@ -16,132 +21,116 @@ export default function EventPopup({
   onClose,
   onNext,
   onPrev,
+  onSelectEvent,
 }: EventPopupProps) {
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+  
+  useEffect(() => {
+    setShowDetails(false);
+  }, [event]);
+  
   const currentIndex = events.findIndex((e) => e.id === event.id);
   const isFirst = currentIndex === 0;
   const isLast = currentIndex === events.length - 1;
 
-  const isVideo = event.mediaType === "video";
-
-  // Video overlay state for period 5
-  const [showVideoOverlay, setShowVideoOverlay] = useState(false);
-  const [videoSkipped, setVideoSkipped] = useState(false);
-  const videoOverlayRef = useRef<HTMLVideoElement>(null);
-  const thumbnailVideoRef = useRef<HTMLVideoElement>(null);
-
-  // Auto-show video overlay when a period 5 event first appears
-  useEffect(() => {
-    if (isVideo) {
-      setShowVideoOverlay(true);
-      setVideoSkipped(false);
-    } else {
-      setShowVideoOverlay(false);
-      setVideoSkipped(false);
-    }
-  }, [event.id, isVideo]);
-
-  const handleVideoEnd = () => {
-    setShowVideoOverlay(false);
-    setVideoSkipped(true);
-  };
-
-  const handleSkipVideo = () => {
-    if (videoOverlayRef.current) {
-      videoOverlayRef.current.pause();
-    }
-    setShowVideoOverlay(false);
-    setVideoSkipped(true);
-  };
+  const marker = markers.find((m) => m.id === event.markerId);
+  const markerEvents = getEventsByMarker(event.markerId);
+  const hasMultipleEvents = markerEvents.length > 1;
 
   return (
     <>
-      {/* Main popup card */}
       <div className="event-popup-overlay">
-        <div className="event-popup-card">
-          {/* Media section — image or thumbnail video */}
-          <div className="event-popup-media">
-            {isVideo ? (
-              <video
-                ref={thumbnailVideoRef}
-                src={event.media}
-                className="event-popup-media-video"
-                muted
-                loop
-                autoPlay
-                playsInline
-                onClick={() => {
-                  setShowVideoOverlay(true);
-                  setVideoSkipped(false);
-                }}
-              />
-            ) : (
-              <img
-                src={event.media}
-                alt={event.title}
+        <div className="event-popup-container">
+          {/* Details Panel (left side of popup) */}
+          {event.details && showDetails && (
+            <div className="event-popup-details-panel">
+              <ReactMarkdown>{event.details}</ReactMarkdown>
+            </div>
+          )}
+
+          <div className="event-popup-card has-image">
+          {/* Image Header */}
+          {event.image && (
+            <div className="event-popup-media" onClick={() => setIsLightboxOpen(true)}>
+              <Image 
+                src={event.image} 
+                alt={event.title} 
+                fill 
                 className="event-popup-media-img"
               />
-            )}
-            {isVideo && (
-              <button
-                className="event-popup-play-btn"
-                onClick={() => {
-                  setShowVideoOverlay(true);
-                  setVideoSkipped(false);
-                }}
-                title="Xem video"
-              >
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="5,3 19,12 5,21" />
-                </svg>
-              </button>
-            )}
-          </div>
+              <div className="event-popup-media-overlay">
+                <Maximize2 size={24} className="event-popup-expand-icon" />
+              </div>
+            </div>
+          )}
 
           {/* Header */}
           <div className="event-popup-header">
             <button className="event-popup-close" onClick={onClose}>
-              ✕
+              <X size={18} />
             </button>
 
-            <div
-              className="event-popup-period"
-              style={{ color: event.periodColor }}
-            >
-              <span
-                className="event-popup-period-dot"
-                style={{ backgroundColor: event.periodColor }}
-              />
-              {event.periodName}
-            </div>
+            {marker && (
+              <div className="event-popup-marker-name">
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                  <circle cx="12" cy="10" r="3" />
+                </svg>
+                {marker.name}
+              </div>
+            )}
 
-            <div className="event-popup-year">
-              {event.year}
-              {event.month ? `.${String(event.month).padStart(2, "0")}` : ""}
-            </div>
-
+            <div className="event-popup-year">{event.yearLabel}</div>
             <h2 className="event-popup-title">{event.title}</h2>
           </div>
 
           {/* Body */}
           <div className="event-popup-body">
-            <div className="event-popup-location">
-              <svg
-                width="14"
-                height="14"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              {event.location}
-            </div>
             <p className="event-popup-description">{event.description}</p>
+            {event.details && (
+              <button 
+                className="btn-read-more"
+                onClick={() => setShowDetails(!showDetails)}
+              >
+                {showDetails ? "Thu gọn" : "Xem thêm"}
+              </button>
+            )}
           </div>
 
-          {/* Footer */}
+          {/* Marker events list — when marker has multiple events */}
+          {hasMultipleEvents && (
+            <div className="event-popup-marker-events">
+              <div className="event-popup-marker-events-label">
+                Các sự kiện tại {marker?.name}
+              </div>
+              {markerEvents.map((me) => (
+                <button
+                  key={me.id}
+                  className={`event-popup-marker-event-item ${
+                    me.id === event.id ? "active" : ""
+                  }`}
+                  onClick={() => onSelectEvent(me)}
+                >
+                  <span className="event-popup-marker-event-year">
+                    {me.yearLabel}
+                  </span>
+                  <span className="event-popup-marker-event-title">
+                    {me.title}
+                  </span>
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Footer — global navigation */}
           <div className="event-popup-footer">
             <button
               className="event-popup-nav-btn"
@@ -164,26 +153,43 @@ export default function EventPopup({
             </button>
           </div>
         </div>
+        </div>
       </div>
 
-      {/* Video overlay for period 5 — large centered player */}
-      {isVideo && showVideoOverlay && (
-        <div className="video-overlay">
-          <div className="video-overlay-backdrop" onClick={handleSkipVideo} />
-          <div className="video-overlay-container">
-            <video
-              ref={videoOverlayRef}
-              src={event.media}
-              className="video-overlay-player"
-              autoPlay
-              playsInline
-              controls
-              onEnded={handleVideoEnd}
-            />
-            <button className="video-overlay-skip" onClick={handleSkipVideo}>
-              Bỏ qua ✕
-            </button>
-            <div className="video-overlay-title">{event.title}</div>
+      {/* Lightbox for full screen image */}
+      {isLightboxOpen && event.image && (
+        <div className="lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
+          <button className="lightbox-close" onClick={() => setIsLightboxOpen(false)}>
+            <X size={32} />
+          </button>
+          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
+            <TransformWrapper
+              initialScale={1}
+              minScale={0.5}
+              maxScale={4}
+              centerOnInit={true}
+            >
+              {({ zoomIn, zoomOut, resetTransform }) => (
+                <>
+                  <div className="lightbox-controls">
+                    <button onClick={() => zoomIn()} title="Phóng to"><ZoomIn size={20} /></button>
+                    <button onClick={() => zoomOut()} title="Thu nhỏ"><ZoomOut size={20} /></button>
+                    <button onClick={() => resetTransform()} title="Đặt lại"><RotateCcw size={20} /></button>
+                  </div>
+                  <TransformComponent 
+                    wrapperStyle={{ width: "100%", height: "100%" }} 
+                    contentStyle={{ width: "100%", height: "100%", position: "relative" }}
+                  >
+                    <Image 
+                      src={event.image!} 
+                      alt={event.title}
+                      fill
+                      className="lightbox-img"
+                    />
+                  </TransformComponent>
+                </>
+              )}
+            </TransformWrapper>
           </div>
         </div>
       )}

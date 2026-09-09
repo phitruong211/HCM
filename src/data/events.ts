@@ -1,422 +1,241 @@
+// ═══════════════════════════════════════════
+//  Dữ liệu chính thức — 7 Markers / 15 Sự kiện
+//  Hành trình tư tưởng Hồ Chí Minh
+// ═══════════════════════════════════════════
+
+export interface Marker {
+  id: string;
+  name: string;
+  coordinates: [number, number]; // [lng, lat]
+}
+
 export interface HistoricalEvent {
   id: string;
-  year: number;
-  month?: number;
+  /** Label thời gian hiển thị (hỗ trợ dạng "Trước 1911", "1911-1917", v.v.) */
+  yearLabel: string;
+  /** Năm chính để sắp xếp theo thời gian */
+  sortYear: number;
   title: string;
   description: string;
-  location: string;
-  coordinates: [number, number]; // [lng, lat]
-  period: number;
-  periodName: string;
-  periodColor: string;
-  media: string; // path to image or video in /media/
-  mediaType: "image" | "video";
+  markerId: string;
+  image: string;
+  details?: string;
 }
 
-export interface Period {
-  id: number;
-  name: string;
-  timeRange: string;
-  color: string;
-  description: string;
-}
-
-export const periods: Period[] = [
+// ─── 7 Markers ───
+export const markers: Marker[] = [
   {
-    id: 1,
-    name: "Hình thành tư tưởng yêu nước",
-    timeRange: "1890 – 1911",
-    color: "#d4a847",
-    description: "Từ quê hương Nghệ An đến Bến Nhà Rồng – hình thành chí hướng cứu nước",
+    id: "marker-1",
+    name: "Nghệ An & Thừa Thiên Huế",
+    coordinates: [105.7, 18.0],
   },
   {
-    id: 2,
-    name: "Tìm đường cứu nước",
-    timeRange: "1911 – 1920",
-    color: "#c05746",
-    description: "Bôn ba khắp thế giới, tìm ra con đường cách mạng vô sản",
+    id: "marker-2",
+    name: "Sài Gòn",
+    coordinates: [106.705, 10.768],
   },
   {
-    id: 3,
-    name: "Hình thành tư tưởng cách mạng",
-    timeRange: "1921 – 1930",
-    color: "#7b6b8a",
-    description: "Hoạt động tại Pháp, Liên Xô, Trung Quốc – sáng lập Đảng Cộng sản Việt Nam",
+    id: "marker-3",
+    name: "Nước Pháp",
+    coordinates: [2.35, 48.86],
   },
   {
-    id: 4,
-    name: "Vượt qua thử thách",
-    timeRange: "1930 – 1945",
-    color: "#5a8a6c",
-    description: "Kiên trì con đường cách mạng, lãnh đạo giành độc lập dân tộc",
+    id: "marker-4",
+    name: "Trung Quốc",
+    coordinates: [113.26, 23.13],
   },
   {
-    id: 5,
-    name: "Phát triển & hoàn thiện",
-    timeRange: "1945 – 1969",
-    color: "#4a7a9b",
-    description: "Lãnh đạo kháng chiến, xây dựng chủ nghĩa xã hội, để lại Di chúc bất hủ",
+    id: "marker-5",
+    name: "Liên Xô",
+    coordinates: [37.62, 55.76],
+  },
+  {
+    id: "marker-6",
+    name: "Cao Bằng",
+    coordinates: [106.06, 22.84],
+  },
+  {
+    id: "marker-7",
+    name: "Thủ đô Hà Nội",
+    coordinates: [105.834, 21.037],
   },
 ];
 
+// ─── 15 Sự kiện (đã sắp xếp theo thời gian) ───
 export const events: HistoricalEvent[] = [
-  // ═══ GIAI ĐOẠN 1: Trước 1911 ═══
   {
     id: "evt-01",
-    year: 1890,
-    month: 5,
-    title: "Nguyễn Sinh Cung chào đời",
+    yearLabel: "Trước 1911",
+    sortYear: 1908,
+    title: "Tư tưởng yêu nước và phong trào chống thuế",
     description:
-      "Nguyễn Sinh Cung (sau này là Hồ Chí Minh) sinh ngày 19/5/1890 tại làng Hoàng Trù, xã Kim Liên, huyện Nam Đàn, tỉnh Nghệ An, trong một gia đình nhà Nho yêu nước. Cha là cụ Phó bảng Nguyễn Sinh Sắc, mẹ là bà Hoàng Thị Loan.",
-    location: "Kim Liên, Nam Đàn, Nghệ An",
-    coordinates: [105.56, 18.66],
-    period: 1,
-    periodName: "Hình thành tư tưởng yêu nước",
-    periodColor: "#d4a847",
-    media: "/media/evt-01.jpg",
-    mediaType: "image",
+      "Nguyễn Tất Thành sớm có tư tưởng yêu nước, tham gia phong trào chống thuế ở Trung Kỳ năm 1908.",
+    markerId: "marker-1",
+    image: "/media/event-1.jpg",
+    details: "**Nguồn gốc hình thành tư tưởng:**\n- **Quê hương Nghệ An:** Vùng đất giàu truyền thống yêu nước, lắm nhân tài và anh hùng yêu nước nổi tiếng trong lịch sử dân tộc.\n- **Gia đình:** Thuở thiếu niên chịu ảnh hưởng từ tinh thần yêu nước, thương dân và nhân cách của người cha (cụ Nguyễn Sinh Sắc - đỗ phó bảng) và từ tình cảm của người mẹ thông qua tấm lòng nhân hậu, tần tảo, đảm đang, hết mực thương yêu chồng, con và ăn ở nhân đức với mọi người của cụ Hoàng Thị Loan.\n- **Giáo dục và xã hội:** Được theo học các vị túc nho và tiếp xúc với nhiều loại sách báo tiến bộ, ở các trường, lớp tại Vinh, kinh đô Huế; hiểu rõ tình cảnh nước nhà bị giặc ngoại xâm đô hộ.\n\n**Hoạt động thực tiễn tiêu biểu:**\n- Tham gia phong trào chống thuế ở Trung Kỳ (năm 1908).\n- Dạy học tại Trường Dục Thanh, Phan Thiết - truyền thụ cho học sinh lòng yêu nước và những suy nghĩ về vận mệnh nước nhà.\n\n**Bước chuyển lớn trong tư tưởng:**\n- Khâm phục tinh thần yêu nước của các vị tiền bối cách mạng (Phan Bội Châu, Phan Châu Trinh, Hoàng Hoa Thám, v.v.) nhưng không tán thành, không đi theo các phương pháp, khuynh hướng cứu nước của họ."
   },
   {
     id: "evt-02",
-    year: 1895,
-    title: "Lần đầu vào Huế",
+    yearLabel: "05/06/1911",
+    sortYear: 1911,
+    title: "Ra nước ngoài tìm đường cứu nước",
     description:
-      "Nguyễn Sinh Cung theo cha vào Huế lần đầu tiên. Tại đây, cậu bé sớm tiếp xúc với văn hóa kinh kỳ và chứng kiến cuộc sống cơ cực của nhân dân dưới ách thống trị thực dân Pháp.",
-    location: "Huế, Thừa Thiên Huế",
-    coordinates: [107.59, 16.46],
-    period: 1,
-    periodName: "Hình thành tư tưởng yêu nước",
-    periodColor: "#d4a847",
-    media: "/media/evt-02.jpg",
-    mediaType: "image",
+      "Ngày 5/6/1911: Quyết định đi ra nước ngoài tìm con đường cứu nước, cứu dân.",
+    markerId: "marker-2",
+    image: "/media/event-2.jpg",
+    details: "Ngày 5-6-1911: Hồ Chí Minh đi ra nước ngoài tìm con đường cứu nước, cứu dân, tìm hiểu những gì ẩn giấu sau sức mạnh của kẻ thù và học hỏi kinh nghiệm cách mạng trên thế giới."
   },
   {
     id: "evt-03",
-    year: 1907,
-    title: "Học tại trường Quốc học Huế",
+    yearLabel: "1911 – 1917",
+    sortYear: 1911,
+    title: "Nhận thức bản chất chủ nghĩa đế quốc",
     description:
-      "Nguyễn Tất Thành (tên mới) theo học tại trường Quốc học Huế (1907–1908). Tại đây, Người tiếp thu tư tưởng dân chủ phương Tây qua các thầy giáo tiến bộ và bắt đầu nuôi dưỡng tinh thần yêu nước.",
-    location: "Trường Quốc học Huế",
-    coordinates: [107.588, 16.466],
-    period: 1,
-    periodName: "Hình thành tư tưởng yêu nước",
-    periodColor: "#d4a847",
-    media: "/media/evt-03.jpg",
-    mediaType: "image",
+      "Từ Pháp đi nhiều nước trên thế giới, nhận thức sâu sắc bản chất của chủ nghĩa đế quốc.",
+    markerId: "marker-3",
+    image: "/media/event-3.jpg",
+    details: "Người xác định đúng bản chất, thủ đoạn, tội ác của chủ nghĩa thực dân và tình cảnh nhân dân các nước thuộc địa.\n\nQua cuộc hành trình từ Pháp đến nhiều nước trên thế giới, Người hình thành một nhận thức mới: Nhân dân lao động các nước, trong đó có giai cấp công nhân, đều bị bóc lột có thể là bạn của nhau; còn chủ nghĩa đế quốc, bọn thực dân ở đâu cũng là kẻ bóc lột, là kẻ thù của nhân dân lao động.\n\nNăm 1917: trở lại Pháp, tham gia phong trào công nhân Pháp đấu tranh chống chủ nghĩa thực dân."
   },
   {
     id: "evt-04",
-    year: 1908,
-    month: 4,
-    title: "Tham gia phong trào chống thuế",
+    yearLabel: "18/06/1919",
+    sortYear: 1919,
+    title: "Bản Yêu sách của nhân dân An Nam",
     description:
-      "Tháng 4/1908, Nguyễn Tất Thành tham gia phong trào chống thuế của nông dân Trung Kỳ. Sự kiện này đánh dấu bước đầu tiên Người tham gia vào phong trào đấu tranh chống thực dân, dẫn đến bị đuổi khỏi trường Quốc học Huế.",
-    location: "Trung Kỳ (Huế)",
-    coordinates: [107.59, 16.45],
-    period: 1,
-    periodName: "Hình thành tư tưởng yêu nước",
-    periodColor: "#d4a847",
-    media: "/media/evt-04.jpg",
-    mediaType: "image",
+      "Gửi Bản Yêu sách của nhân dân An Nam tới Hội nghị Vécxây đòi quyền tự do, dân chủ.",
+    markerId: "marker-3",
+    image: "/media/event-4.jpg",
+    details: "Năm 1919: Gia nhập Đảng Xã hội của giai cấp công nhân Pháp - theo Người, đây là tổ chức theo đuổi lý tưởng cao quý của Đại Cách mạng Pháp: Tự do, bình đẳng, bác ái.\n\n18-6-1919: Bước nhận thức mới về quyền tự do, dân chủ của nhân dân trong tư tưởng Hồ Chí Minh khi Người thay mặt những người Việt Nam yêu nước ở Pháp, gửi Yêu sách của nhân dân An Nam tới Hội nghị Vécxây, đòi quyền tự do, dân chủ cho nhân dân Việt Nam."
   },
   {
     id: "evt-05",
-    year: 1910,
-    title: "Dạy học tại trường Dục Thanh",
+    yearLabel: "Tháng 7/1920",
+    sortYear: 1920,
+    title: "Đọc Luận cương của V.I. Lênin",
     description:
-      "Từ tháng 9/1910 đến tháng 2/1911, Nguyễn Tất Thành dạy học tại trường Dục Thanh ở Phan Thiết. Đây là thời gian Người vừa dạy học vừa nung nấu ý chí ra đi tìm đường cứu nước.",
-    location: "Trường Dục Thanh, Phan Thiết",
-    coordinates: [108.1, 10.93],
-    period: 1,
-    periodName: "Hình thành tư tưởng yêu nước",
-    periodColor: "#d4a847",
-    media: "/media/evt-05.jpg",
-    mediaType: "image",
+      "Đọc Sơ thảo lần thứ nhất những luận cương về vấn đề dân tộc và vấn đề thuộc địa của V.I. Lênin.",
+    markerId: "marker-3",
+    image: "/media/event-5.jpg",
+    details: "**Xác định con đường cách mạng:**\nTháng 7-1920: Nghiên cứu \"Sơ thảo lần thứ nhất những luận cương về vấn đề dân tộc và vấn đề thuộc địa\" của V.I. Lênin và nhiều tài liệu liên quan đến Quốc tế Cộng sản và tích cực tham gia các hoạt động thực tế trong Đảng Xã hội Pháp.\n\n→ Người tìm thấy ở đây con đường cách mạng vô sản."
   },
   {
     id: "evt-06",
-    year: 1911,
-    month: 6,
-    title: "Ra đi tìm đường cứu nước",
+    yearLabel: "Tháng 12/1920",
+    sortYear: 1920,
+    title: "Đại hội Tua – Sáng lập Đảng Cộng sản Pháp",
     description:
-      "Ngày 5/6/1911, tại Bến Nhà Rồng (Sài Gòn), Nguyễn Tất Thành với tên Văn Ba lên tàu Amiral Latouche-Tréville ra đi tìm đường cứu nước. Đây là bước ngoặt lịch sử, mở đầu hành trình 30 năm bôn ba khắp năm châu bốn biển.",
-    location: "Bến Nhà Rồng, Sài Gòn",
-    coordinates: [106.705, 10.768],
-    period: 1,
-    periodName: "Hình thành tư tưởng yêu nước",
-    periodColor: "#d4a847",
-    media: "/media/evt-06.jpg",
-    mediaType: "image",
+      "Dự Đại hội Tua, bỏ phiếu tán thành Quốc tế Cộng sản và tham gia sáng lập Đảng Cộng sản Pháp.",
+    markerId: "marker-3",
+    image: "/media/event-6.jpg",
+    details: "Tháng 12-1920: Hồ Chí Minh cùng những người phái tả trong Đảng Xã hội Pháp tại Đại hội ở thành phố Tua.\n\n→ Bước ngoặt chủ nghĩa yêu nước kết hợp chặt chẽ với lập trường cách mạng vô sản."
   },
-
-  // ═══ GIAI ĐOẠN 2: 1911–1920 ═══
   {
     id: "evt-07",
-    year: 1912,
-    title: "Đến nước Mỹ",
+    yearLabel: "1921 – 1922",
+    sortYear: 1921,
+    title: "Hội Liên hiệp thuộc địa & báo Le Paria",
     description:
-      "Nguyễn Tất Thành đến nước Mỹ, sống và làm việc tại nhiều thành phố. Tại đây, Người chứng kiến sự phân biệt chủng tộc đối với người da đen và tìm hiểu về Tuyên ngôn Độc lập của nước Mỹ năm 1776.",
-    location: "New York, Hoa Kỳ",
-    coordinates: [-74.006, 40.7128],
-    period: 2,
-    periodName: "Tìm đường cứu nước",
-    periodColor: "#c05746",
-    media: "/media/evt-07.jpg",
-    mediaType: "image",
+      "Sáng lập Hội Liên hiệp thuộc địa, làm Trưởng Tiểu ban Nghiên cứu vấn đề dân tộc thuộc địa và sáng lập báo Le Paria.",
+    markerId: "marker-3",
+    image: "/media/event-7.jpg",
+    details: "**Thời kỳ từ cuối năm 1920 đến đầu năm 1930:** Hình thành những nội dung cơ bản tư tưởng về cách mạng Việt Nam.\n\nNgười tích cực sử dụng báo chí Pháp lên án chủ nghĩa thực dân Pháp để thức tỉnh tinh thần giải phóng dân tộc của nhân dân các nước thuộc địa và của dân tộc Việt Nam."
   },
   {
     id: "evt-08",
-    year: 1913,
-    title: "Đến nước Anh",
+    yearLabel: "1925 – 1927",
+    sortYear: 1925,
+    title: "Hội VN Cách mạng Thanh niên & Đường cách mệnh",
     description:
-      "Nguyễn Tất Thành đến London, làm nhiều nghề để kiếm sống như cào tuyết, đốt lò, phụ bếp. Người nghiên cứu về chủ nghĩa tư bản Anh và tham gia sinh hoạt trong phong trào công nhân Anh.",
-    location: "London, Anh",
-    coordinates: [-0.1276, 51.5074],
-    period: 2,
-    periodName: "Tìm đường cứu nước",
-    periodColor: "#c05746",
-    media: "/media/evt-08.jpg",
-    mediaType: "image",
+      "Sáng lập Hội Việt Nam Cách mạng Thanh niên ở Quảng Châu và xuất bản tác phẩm Đường cách mệnh.",
+    markerId: "marker-4",
+    image: "/media/event-8.jpg",
+    details: "Tháng 6-1925: Sáng lập tổ chức tiền thân của Đảng Cộng sản: Hội Việt Nam Thanh niên Cách mạng, ra báo Thanh niên bằng tiếng Việt, truyền bá chủ nghĩa Mác - Lênin và lý luận cách mạng trong những người yêu nước và công nhân.\n\nNăm 1927: Xuất bản tác phẩm lý luận cốt lõi **Đường cách mệnh**, chuẩn bị mọi mặt về chính trị, tư tưởng, tổ chức cho sự ra đời của Đảng Cộng sản Việt Nam."
   },
   {
     id: "evt-09",
-    year: 1917,
-    title: "Trở lại Pháp hoạt động",
+    yearLabel: "Đầu năm 1930",
+    sortYear: 1930,
+    title: "Thành lập Đảng Cộng sản Việt Nam",
     description:
-      "Nguyễn Tất Thành trở lại Pháp, bắt đầu tham gia tích cực vào phong trào công nhân và những người yêu nước Pháp. Người gia nhập Đảng Xã hội Pháp – chính đảng duy nhất lúc đó ủng hộ quyền của các dân tộc thuộc địa.",
-    location: "Paris, Pháp",
-    coordinates: [2.3522, 48.8566],
-    period: 2,
-    periodName: "Tìm đường cứu nước",
-    periodColor: "#c05746",
-    media: "/media/evt-09.jpg",
-    mediaType: "image",
+      "Chủ trì Hội nghị hợp nhất, thành lập Đảng Cộng sản Việt Nam và thông qua Cương lĩnh chính trị đầu tiên.",
+    markerId: "marker-4",
+    image: "/media/event-9.jpg",
+    details: "**Dấu mốc thành lập Đảng Cộng sản:**\nĐầu năm 1930: Chủ trì Hội nghị hợp nhất các tổ chức cộng sản Việt Nam thành Đảng Cộng sản Việt Nam, thông qua các văn kiện do Người khởi thảo làm nên Cương lĩnh chính trị đầu tiên của Đảng.\n\n**Tư tưởng cốt lõi của Cương lĩnh:**\n- \"Làm tư sản dân quyền cách mạng và thổ địa cách mạng để đi tới xã hội cộng sản\", \"đánh đổ đế quốc Pháp, phong kiến An Nam và giai cấp tư sản phản cách mạng\", giương cao ngọn cờ độc lập dân tộc và chủ nghĩa xã hội.\n- Khẳng định sự lãnh đạo của Đảng Cộng sản Việt Nam.\n- Liên minh công nông là lực lượng nòng cốt.\n- Cách mạng Việt Nam là một bộ phận cách mạng thế giới.\n\nSự kiện này đã chấm dứt cuộc khủng hoảng về đường lối và tổ chức lãnh đạo cách mạng Việt Nam kéo dài suốt từ cuối thế kỷ XIX sang đầu năm 1930."
   },
   {
     id: "evt-10",
-    year: 1919,
-    month: 6,
-    title: "Yêu sách của nhân dân An Nam",
+    yearLabel: "1934 – 1938",
+    sortYear: 1934,
+    title: "Học tại Trường quốc tế Lênin",
     description:
-      "Tháng 6/1919, với tên Nguyễn Ái Quốc, Người gửi bản \"Yêu sách của nhân dân An Nam\" (Revendications du peuple annamite) tới Hội nghị Versailles, đòi quyền tự do, dân chủ cho nhân dân Việt Nam. Sự kiện gây tiếng vang lớn trong dư luận quốc tế.",
-    location: "Versailles, Pháp",
-    coordinates: [2.1204, 48.8049],
-    period: 2,
-    periodName: "Tìm đường cứu nước",
-    periodColor: "#c05746",
-    media: "/media/evt-10.jpg",
-    mediaType: "image",
+      "Học tại Trường quốc tế Lênin và làm nghiên cứu sinh tại Viện Nghiên cứu các vấn đề dân tộc và thuộc địa.",
+    markerId: "marker-5",
+    image: "/media/event-10.jpg",
+    details: "**Thời kỳ 1930 – đầu 1941:** Vượt qua thử thách, giữ vững đường lối đúng đắn.\n\nThử thách đến từ cả kẻ thù lẫn nội bộ những người cách mạng. Một số người trong Quốc tế Cộng sản và Đảng Cộng sản Việt Nam chịu ảnh hưởng quan điểm \"giáo điều tả khuynh\", không hiểu đúng tình hình thuộc địa/Đông Dương. Tư tưởng của Hồ Chí Minh bị phê phán, quy kết là \"hữu khuynh\", \"dân tộc chủ nghĩa\".\n\n**Mốc sự kiện chính:**\n- 10-1930: Hội nghị Trung ương Đảng ra nghị quyết phê phán Hội nghị hợp nhất.\n- 1934: Thoát ngục Hồng Kông, sang Liên Xô học Trường Quốc tế Lênin.\n- 1934–1938: Vẫn bị hiểu lầm về hoạt động và quan điểm cách mạng.\n- 6-6-1938: Gửi thư xin Quốc tế Cộng sản cho về nước hoạt động.\n- 10-1938: Rời Liên Xô, qua Trung Quốc về nước."
   },
   {
     id: "evt-11",
-    year: 1920,
-    month: 7,
-    title: "Đọc Luận cương của Lenin",
+    yearLabel: "Tháng 5/1941",
+    sortYear: 1941,
+    title: "Trở về Pác Bó – Mặt trận Việt Minh",
     description:
-      "Tháng 7/1920, Nguyễn Ái Quốc đọc \"Sơ thảo lần thứ nhất Luận cương về vấn đề dân tộc và vấn đề thuộc địa\" của V.I. Lenin trên báo L'Humanité. Người đã vui mừng đến phát khóc và nhận ra: \"Đây là cái cần thiết cho chúng ta, đây là con đường giải phóng chúng ta!\"",
-    location: "Paris, Pháp",
-    coordinates: [2.34, 48.86],
-    period: 2,
-    periodName: "Tìm đường cứu nước",
-    periodColor: "#c05746",
-    media: "/media/evt-11.jpg",
-    mediaType: "image",
+      "Trở về Pác Bó, chủ trì Hội nghị Trung ương Đảng, nêu chủ trương lập Mặt trận Việt Minh.",
+    markerId: "marker-6",
+    image: "/media/event-11.jpg",
+    details: "**Quá trình về nước và Hội nghị Trung ương 8:**\n- 12-1940: Về gần biên giới Việt–Trung, liên lạc với TW Đảng.\n- 1-1941: Mở lớp huấn luyện cán bộ, viết sách Con đường giải phóng.\n- Cuối 1-1941: Hồ Chí Minh về nước.\n- 5-1941: Chủ trì Hội nghị TW Đảng tại Pác Bó (Cao Bằng).\n\n**Nội dung Hội nghị Trung ương tháng 5-1941 (bước ngoặt quan trọng nhất):**\n- Đặt nhiệm vụ giải phóng dân tộc lên hàng đầu: \"quyền lợi dân tộc giải phóng cao hơn hết thảy\".\n- Tạm gác khẩu hiệu cách mạng ruộng đất.\n- Chủ trương lập Mặt trận Việt Minh, đại đoàn kết dân tộc (nòng cốt công–nông), nêu phương hướng khởi nghĩa vũ trang giành chính quyền.\n\n**Ý nghĩa:** Đây là sự \"trở về\" với quan điểm đúng đắn của Hồ Chí Minh đã nêu từ Cương lĩnh chính trị đầu tiên (1930). Đặt nền móng trực tiếp cho thắng lợi Cách mạng Tháng Tám 1945."
   },
   {
     id: "evt-12",
-    year: 1920,
-    month: 12,
-    title: "Sáng lập Đảng Cộng sản Pháp",
+    yearLabel: "02/09/1945",
+    sortYear: 1945,
+    title: "Tuyên ngôn Độc lập",
     description:
-      "Tại Đại hội lần thứ XVIII Đảng Xã hội Pháp (Đại hội Tours, 25-30/12/1920), Nguyễn Ái Quốc bỏ phiếu tán thành gia nhập Quốc tế Cộng sản (Quốc tế III), tham gia sáng lập Đảng Cộng sản Pháp. Đây là bước ngoặt quyết định: từ chủ nghĩa yêu nước sang chủ nghĩa cộng sản.",
-    location: "Tours, Pháp",
-    coordinates: [0.6848, 47.3941],
-    period: 2,
-    periodName: "Tìm đường cứu nước",
-    periodColor: "#c05746",
-    media: "/media/evt-12.jpg",
-    mediaType: "image",
+      "Đọc Tuyên ngôn độc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa.",
+    markerId: "marker-7",
+    image: "/media/event-12.jpg",
+    details: "**Thời kỳ 1941 – tháng 9-1969:** Tư tưởng HCM tiếp tục phát triển, soi đường cách mạng.\n\n**Giai đoạn giành chính quyền (1941–1945):**\n- 19-5-1941: Sáng lập Mặt trận Việt Minh.\n- 22-12-1944: Sáng lập Việt Nam tuyên truyền giải phóng quân.\n- 18-8-1945: Ra Lời kêu gọi Tổng khởi nghĩa → Cách mạng Tháng Tám 1945 thành công.\n- 2-9-1945: Đọc Tuyên ngôn Độc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa.\n\n**Giai đoạn \"ngàn cân treo sợi tóc\" (2-9-1945 → 19-12-1946):**\n- Phương châm: \"Dĩ bất biến, ứng vạn biến\".\n- Sách lược linh hoạt: hòa Tưởng đánh Pháp, rồi hòa Pháp đuổi Tưởng → tranh thủ thời gian củng cố lực lượng. Mẫu mực về \"thêm bạn bớt thù\"."
   },
-
-  // ═══ GIAI ĐOẠN 3: 1921–1930 ═══
   {
     id: "evt-13",
-    year: 1921,
-    title: "Sáng lập Hội Liên hiệp thuộc địa",
+    yearLabel: "19/12/1946",
+    sortYear: 1946,
+    title: "Lời kêu gọi toàn quốc kháng chiến",
     description:
-      "Năm 1921, tại Paris, Nguyễn Ái Quốc cùng các nhà cách mạng từ các nước thuộc địa sáng lập Hội Liên hiệp thuộc địa và xuất bản báo \"Le Paria\" (Người cùng khổ), tố cáo chế độ thực dân trước dư luận quốc tế.",
-    location: "Paris, Pháp",
-    coordinates: [2.36, 48.87],
-    period: 3,
-    periodName: "Hình thành tư tưởng cách mạng",
-    periodColor: "#7b6b8a",
-    media: "/media/evt-13.jpg",
-    mediaType: "image",
+      "Ra Lời kêu gọi toàn quốc kháng chiến chống thực dân Pháp.",
+    markerId: "marker-7",
+    image: "/media/event-13.jpg",
+    details: "Ngày 19-12-1946: Lời kêu gọi Toàn quốc kháng chiến — vừa là đường lối kháng chiến (lâu dài, toàn dân, toàn diện, tự lực cánh sinh), vừa là lời thề bảo vệ Tổ quốc."
   },
   {
     id: "evt-14",
-    year: 1923,
-    title: "Đến Liên Xô",
+    yearLabel: "1946 – 1954",
+    sortYear: 1946,
+    title: "Lãnh đạo kháng chiến chống thực dân Pháp",
     description:
-      "Tháng 6/1923, Nguyễn Ái Quốc đến Moscow (Liên Xô), học tập tại Đại học Phương Đông. Tại đây, Người nghiên cứu sâu về chủ nghĩa Marx-Lenin và dự Đại hội Quốc tế Nông dân (10/1923), Đại hội V Quốc tế Cộng sản (6-7/1924).",
-    location: "Moscow, Liên Xô",
-    coordinates: [37.6173, 55.7558],
-    period: 3,
-    periodName: "Hình thành tư tưởng cách mạng",
-    periodColor: "#7b6b8a",
-    media: "/media/evt-14.jpg",
-    mediaType: "image",
+      "Đề ra đường lối và trực tiếp lãnh đạo cuộc kháng chiến chống thực dân Pháp thắng lợi.",
+    markerId: "marker-7",
+    image: "/media/event-14.jpg",
+    details: "**Kháng chiến chống Pháp (1946–1954):**\nHoàn thiện lý luận cách mạng dân tộc dân chủ nhân dân; bắt đầu hình thành tư tưởng xây dựng CNXH.\n\nNăm 1954: Kháng chiến chống Pháp thắng lợi → miền Bắc bước vào thời kỳ quá độ lên CNXH."
   },
   {
     id: "evt-15",
-    year: 1925,
-    title: "Thành lập Hội VN Cách mạng Thanh niên",
+    yearLabel: "1954 – 1969",
+    sortYear: 1954,
+    title: "Xây dựng CNXH miền Bắc & cách mạng miền Nam",
     description:
-      "Tháng 6/1925, tại Quảng Châu (Trung Quốc), Nguyễn Ái Quốc thành lập Hội Việt Nam Cách mạng Thanh niên – tổ chức tiền thân của Đảng Cộng sản Việt Nam. Cùng thời gian, Người xuất bản tác phẩm \"Bản án chế độ thực dân Pháp\" tại Paris.",
-    location: "Quảng Châu, Trung Quốc",
-    coordinates: [113.2644, 23.1291],
-    period: 3,
-    periodName: "Hình thành tư tưởng cách mạng",
-    periodColor: "#7b6b8a",
-    media: "/media/evt-15.jpg",
-    mediaType: "image",
-  },
-  {
-    id: "evt-16",
-    year: 1927,
-    title: "Xuất bản \"Đường Cách mệnh\"",
-    description:
-      "Năm 1927, tác phẩm \"Đường Cách mệnh\" được xuất bản, tập hợp các bài giảng của Nguyễn Ái Quốc tại các lớp huấn luyện chính trị ở Quảng Châu. Đây là tác phẩm lý luận quan trọng, vạch ra con đường cách mạng Việt Nam.",
-    location: "Quảng Châu, Trung Quốc",
-    coordinates: [113.27, 23.13],
-    period: 3,
-    periodName: "Hình thành tư tưởng cách mạng",
-    periodColor: "#7b6b8a",
-    media: "/media/evt-16.jpg",
-    mediaType: "image",
-  },
-  {
-    id: "evt-17",
-    year: 1930,
-    month: 2,
-    title: "Thành lập Đảng Cộng sản Việt Nam",
-    description:
-      "Ngày 3/2/1930, tại Cửu Long (Hồng Kông), Nguyễn Ái Quốc chủ trì Hội nghị hợp nhất ba tổ chức cộng sản, thành lập Đảng Cộng sản Việt Nam. Người soạn thảo Cương lĩnh chính trị đầu tiên của Đảng – văn kiện lịch sử mang tầm vóc thời đại.",
-    location: "Cửu Long, Hồng Kông",
-    coordinates: [114.1694, 22.3193],
-    period: 3,
-    periodName: "Hình thành tư tưởng cách mạng",
-    periodColor: "#7b6b8a",
-    media: "/media/evt-17.jpg",
-    mediaType: "image",
-  },
-
-  // ═══ GIAI ĐOẠN 4: 1930–1945 ═══
-  {
-    id: "evt-18",
-    year: 1931,
-    month: 6,
-    title: "Bị bắt tại Hồng Kông",
-    description:
-      "Ngày 6/6/1931, Nguyễn Ái Quốc bị cảnh sát Anh bắt tại Hồng Kông. Nhờ sự giúp đỡ của luật sư Frank Loseby và Quốc tế Cộng sản, Người được trả tự do sau hơn một năm bị giam giữ.",
-    location: "Hồng Kông",
-    coordinates: [114.17, 22.32],
-    period: 4,
-    periodName: "Vượt qua thử thách",
-    periodColor: "#5a8a6c",
-    media: "/media/evt-18.jpg",
-    mediaType: "image",
-  },
-  {
-    id: "evt-19",
-    year: 1941,
-    month: 1,
-    title: "Về nước lãnh đạo cách mạng",
-    description:
-      "Ngày 28/1/1941, sau 30 năm bôn ba ở nước ngoài, Nguyễn Ái Quốc trở về Tổ quốc tại Pác Bó (Cao Bằng). Tháng 5/1941, Người triệu tập Hội nghị Trung ương lần thứ 8, thành lập Mặt trận Việt Minh, chuẩn bị lực lượng cho cuộc Tổng khởi nghĩa.",
-    location: "Pác Bó, Cao Bằng",
-    coordinates: [106.06, 22.84],
-    period: 4,
-    periodName: "Vượt qua thử thách",
-    periodColor: "#5a8a6c",
-    media: "/media/evt-19.jpg",
-    mediaType: "image",
-  },
-  {
-    id: "evt-20",
-    year: 1945,
-    month: 8,
-    title: "Cách mạng Tháng Tám thành công",
-    description:
-      "Tháng 8/1945, dưới sự lãnh đạo của Hồ Chí Minh và Đảng Cộng sản, nhân dân Việt Nam tiến hành cuộc Tổng khởi nghĩa Cách mạng Tháng Tám thành công trên cả nước, lật đổ chế độ phong kiến và ách thực dân.",
-    location: "Tân Trào, Tuyên Quang",
-    coordinates: [105.54, 21.77],
-    period: 4,
-    periodName: "Vượt qua thử thách",
-    periodColor: "#5a8a6c",
-    media: "/media/evt-20.jpg",
-    mediaType: "image",
-  },
-  {
-    id: "evt-21",
-    year: 1945,
-    month: 9,
-    title: "Tuyên ngôn Độc lập",
-    description:
-      "Ngày 2/9/1945, tại Quảng trường Ba Đình (Hà Nội), Chủ tịch Hồ Chí Minh đọc bản Tuyên ngôn Độc lập, khai sinh nước Việt Nam Dân chủ Cộng hòa. Bản Tuyên ngôn khẳng định: \"Tất cả mọi người đều sinh ra có quyền bình đẳng...\"",
-    location: "Quảng trường Ba Đình, Hà Nội",
-    coordinates: [105.834, 21.0368],
-    period: 4,
-    periodName: "Vượt qua thử thách",
-    periodColor: "#5a8a6c",
-    media: "/media/evt-21.jpg",
-    mediaType: "image",
-  },
-
-  // ═══ GIAI ĐOẠN 5: 1945–1969 ═══
-  {
-    id: "evt-22",
-    year: 1946,
-    month: 12,
-    title: "Lời kêu gọi toàn quốc kháng chiến",
-    description:
-      "Ngày 19/12/1946, Chủ tịch Hồ Chí Minh ra \"Lời kêu gọi toàn quốc kháng chiến\", mở đầu cuộc kháng chiến chống thực dân Pháp: \"...Chúng ta thà hy sinh tất cả, chứ nhất định không chịu mất nước, nhất định không chịu làm nô lệ!\"",
-    location: "Hà Nội",
-    coordinates: [105.84, 21.03],
-    period: 5,
-    periodName: "Phát triển & hoàn thiện",
-    periodColor: "#4a7a9b",
-    media: "/media/evt-22.mp4",
-    mediaType: "video",
-  },
-  {
-    id: "evt-23",
-    year: 1954,
-    month: 5,
-    title: "Chiến thắng Điện Biên Phủ",
-    description:
-      "Ngày 7/5/1954, chiến thắng Điện Biên Phủ \"lừng lẫy năm châu, chấn động địa cầu\" kết thúc 9 năm kháng chiến chống Pháp. Dưới sự lãnh đạo của Đảng và Chủ tịch Hồ Chí Minh, quân dân ta đã làm nên chiến thắng lịch sử vĩ đại.",
-    location: "Điện Biên Phủ",
-    coordinates: [103.0189, 21.3891],
-    period: 5,
-    periodName: "Phát triển & hoàn thiện",
-    periodColor: "#4a7a9b",
-    media: "/media/evt-23.mp4",
-    mediaType: "video",
-  },
-  {
-    id: "evt-24",
-    year: 1969,
-    month: 9,
-    title: "Chủ tịch Hồ Chí Minh từ trần & Di chúc",
-    description:
-      "Ngày 2/9/1969, Chủ tịch Hồ Chí Minh từ trần tại Hà Nội, để lại bản Di chúc lịch sử – đỉnh cao của tư tưởng Hồ Chí Minh. Di chúc thể hiện tình yêu thương vô hạn đối với nhân dân, niềm tin vào thắng lợi cuối cùng: \"Không có gì quý hơn độc lập, tự do.\"",
-    location: "Hà Nội",
-    coordinates: [105.836, 21.038],
-    period: 5,
-    periodName: "Phát triển & hoàn thiện",
-    periodColor: "#4a7a9b",
-    media: "/media/evt-24.mp4",
-    mediaType: "video",
+      "Lãnh đạo thực hiện đồng thời hai nhiệm vụ chiến lược là xây dựng chủ nghĩa xã hội ở miền Bắc và cách mạng dân tộc dân chủ nhân dân ở miền Nam.",
+    markerId: "marker-7",
+    image: "/media/event-15.jpg",
+    details: "**Hai nhiệm vụ chiến lược song song (1954–1969):**\n- Miền Bắc: xây dựng CNXH.\n- Miền Nam: tiếp tục cách mạng dân tộc dân chủ nhân dân.\n- Mục tiêu chung: hòa bình, độc lập, thống nhất đất nước.\n\nHồ Chí Minh bổ sung hoàn thiện tư tưởng trên mọi lĩnh vực: chính trị, kinh tế, quân sự, văn hóa, đạo đức, đối ngoại…\n\n**Đỉnh cao tư tưởng thời kỳ kháng chiến chống Mỹ:**\n- 17-7-1966: Lời kêu gọi với chân lý thời đại: \"Không có gì quý hơn độc lập, tự do\".\n- Trước lúc đi xa: để lại Di chúc — văn kiện lịch sử vô giá, mong muốn cuối cùng: xây dựng nước Việt Nam hòa bình, thống nhất, độc lập, dân chủ, giàu mạnh, góp phần vào cách mạng thế giới."
   },
 ];
+
+// ─── Helper: lấy danh sách sự kiện theo marker ───
+export function getEventsByMarker(markerId: string): HistoricalEvent[] {
+  return events.filter((e) => e.markerId === markerId);
+}
+
+// ─── Helper: lấy marker từ event ───
+export function getMarkerForEvent(event: HistoricalEvent): Marker | undefined {
+  return markers.find((m) => m.id === event.markerId);
+}
