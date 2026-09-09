@@ -192,6 +192,32 @@ html, body {
   50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.5); }
 }
 
+/* ─── Region Level Marker ─── */
+.custom-marker.region-level {
+  width: 60px;
+  height: 60px;
+  border: 1px solid rgba(201, 168, 76, 0.2);
+  background: rgba(201, 168, 76, 0.15);
+  box-shadow: none;
+  border-radius: 50%;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.custom-marker.region-level::after {
+  display: none;
+}
+.custom-marker.region-level:hover {
+  transform: scale(1.05);
+  background: rgba(201, 168, 76, 0.25);
+  border-color: rgba(201, 168, 76, 0.4);
+}
+.custom-marker.region-level.active {
+  transform: scale(1.1);
+  background: rgba(201, 168, 76, 0.3);
+  border-color: rgba(201, 168, 76, 0.6);
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.3);
+}
+
 /* ─── Hero Overlay ─── */
 .hero-overlay {
   position: fixed;
@@ -449,6 +475,61 @@ html, body {
   border-color: var(--accent-gold);
 }
 
+/* ─── Timeline Tabs ─── */
+.timeline-tabs {
+  display: flex;
+  padding: 10px 20px 0;
+  gap: 4px;
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
+  overflow-x: auto;
+}
+.timeline-tab {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-secondary);
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+.timeline-tab:hover {
+  color: var(--text-primary);
+  background: rgba(201, 168, 76, 0.05);
+}
+.timeline-tab.active {
+  color: var(--accent-gold);
+  border-bottom-color: var(--accent-gold);
+  background: rgba(201, 168, 76, 0.1);
+}
+
+/* ─── Period Summary ─── */
+.period-summary {
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid var(--border-light);
+  flex-shrink: 0;
+}
+.period-summary-range {
+  font-family: var(--font-accent);
+  font-size: 0.7rem;
+  color: var(--accent-gold);
+  margin-bottom: 4px;
+  letter-spacing: 1px;
+}
+.period-summary-text {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  font-style: italic;
+}
+
 /* ─── Timeline Events List ─── */
 .timeline-events {
   flex: 1;
@@ -507,9 +588,13 @@ html, body {
   box-shadow: 0 0 8px rgba(201, 168, 76, 0.5);
 }
 
-.timeline-event-info {
+.timeline-event-content {
   flex: 1;
   min-width: 0;
+}
+
+.timeline-event-header {
+  width: 100%;
 }
 
 .timeline-event-year {
@@ -551,6 +636,37 @@ html, body {
   color: var(--accent-gold-light);
 }
 
+.timeline-event-details {
+  margin-top: 12px;
+  border-top: 1px dashed var(--border-light);
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.timeline-event-highlight {
+  background: rgba(201, 168, 76, 0.08);
+  border-left: 2px solid var(--accent-gold);
+  padding: 8px 12px;
+  border-radius: 0 4px 4px 0;
+}
+
+.highlight-label {
+  font-family: var(--font-accent);
+  font-size: 0.65rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--accent-gold);
+  margin-bottom: 4px;
+}
+
+.highlight-content {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
 /* ─── Event Popup ─── */
 .event-popup-overlay {
   position: absolute;
@@ -582,28 +698,6 @@ html, body {
   gap: 15px;
 }
 
-.event-popup-details-panel {
-  width: 380px;
-  background: var(--bg-surface);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-primary);
-  border-radius: 4px;
-  padding: 20px;
-  box-shadow: var(--shadow-soft);
-  max-height: calc(100vh - 100px);
-  overflow-y: auto;
-  animation: slide-in-right 0.3s ease;
-  font-family: var(--font-body);
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
-}
-
-.event-popup-details-panel strong {
-  color: var(--accent-gold);
-}
-
 .btn-read-more {
   display: inline-block;
   margin-top: 10px;
@@ -631,7 +725,6 @@ html, body {
   width: 420px;
   min-width: 420px;
   max-height: calc(100vh - 100px);
-  overflow-y: auto;
   background: var(--bg-surface);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -641,6 +734,55 @@ html, body {
   box-shadow: var(--shadow-soft);
   display: flex;
   flex-direction: column;
+}
+
+.event-popup-body {
+  max-height: 45vh;
+  overflow-y: auto;
+  padding: 0 20px 20px;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.event-popup-body strong {
+  color: var(--accent-gold);
+}
+
+.event-popup-header {
+  padding: 20px;
+  position: relative;
+}
+
+.event-popup-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  color: var(--text-heading);
+  line-height: 1.3;
+  margin-top: 4px;
+}
+
+.event-popup-year {
+  font-family: var(--font-accent);
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  letter-spacing: 2px;
+}
+
+.event-popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.event-popup-close:hover {
+  color: var(--text-primary);
 }
 
 /* ─── Event Popup Media ─── */
