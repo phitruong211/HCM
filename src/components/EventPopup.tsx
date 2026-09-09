@@ -45,6 +45,7 @@ export default function EventPopup({
                 src={event.image} 
                 alt={event.title} 
                 fill 
+                unoptimized
                 className="event-popup-media-img"
               />
               <div className="event-popup-media-overlay">
@@ -168,6 +169,7 @@ export default function EventPopup({
                       src={event.image!} 
                       alt={event.title}
                       fill
+                      unoptimized
                       className="lightbox-img"
                     />
                   </TransformComponent>
