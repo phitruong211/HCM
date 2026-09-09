@@ -587,6 +587,27 @@ export default function MapView({
     bounds.extend(prevMarker.coordinates);
     bounds.extend(activeMarker.coordinates);
 
+    if (!isPlaying) {
+      // Manual click: skip line drawing and fitBounds, fly directly to destination
+      map.flyTo({
+        center: activeMarker.coordinates,
+        zoom: 11,
+        pitch: 0,
+        bearing: 0,
+        duration: 1500,
+        essential: true,
+        padding: getMapPadding(),
+      });
+
+      map.once("moveend", () => {
+        updateTerritoryHighlight(activeMarker.coordinates, activeMarker.name);
+        animatingRef.current = false;
+        onTransitionDone();
+      });
+      return;
+    }
+
+    // Auto-play: fit bounds -> draw line -> zoom in
     const pad = getMapPadding();
     map.fitBounds(bounds, {
       padding: { 
@@ -602,7 +623,7 @@ export default function MapView({
 
     map.once("moveend", () => {
       // Sequence Step 2: Draw the line
-      const duration = isPlaying ? 3000 : 800; // 3s for auto-play, 0.8s for manual
+      const duration = 3000; // 3s for auto-play
       const startTime = performance.now();
 
       function animateLine(now: number) {
