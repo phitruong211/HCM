@@ -26,6 +26,7 @@ export default function Home() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [timelineCollapsed, setTimelineCollapsed] = useState(false);
+  const [showValuesModal, setShowValuesModal] = useState(false);
 
   const [activePeriodId, setActivePeriodId] = useState<number>(1);
 
