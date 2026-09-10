@@ -58,6 +58,7 @@ interface Dossier {
 interface NodeData {
   roman: string;
   title: string;
+  subtitle: string;
   footnote: string;
   nextText: string;
   dossiers: Dossier[];
@@ -65,19 +66,20 @@ interface NodeData {
 
 const archiveData: Record<number, NodeData> = {
   1: {
-    roman: "NỀN TẢNG I",
-    title: "Cơ sở Thực tiễn",
-    footnote: "Nền tảng 1 / 3: Khảo cứu bối cảnh thực tiễn trong nước và quốc tế",
-    nextText: "HOÀN THÀNH CƠ SỞ THỰC TIỄN → NỀN TẢNG TIẾP THEO",
+    roman: "01",
+    title: "CƠ SỞ THỰC TIỄN",
+    subtitle: "Bối cảnh Việt Nam và thế giới",
+    footnote: "Phần 1: Bối cảnh thực tiễn trong nước và quốc tế",
+    nextText: "TIẾP THEO",
     dossiers: [
       {
         id: "sec-1-1",
-        tabTitle: "THỰC TIỄN VIỆT NAM CUỐI THẾ KỶ XIX – ĐẦU THẾ KỶ XX",
-        badge: "Phần 1",
+        tabTitle: "Thực tiễn Việt Nam cuối thế kỷ XIX – đầu thế kỷ XX",
+        badge: "Mục 1a",
         est: "3 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ THỰC TIỄN • PHẦN 1/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ THỰC TIỄN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
           <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Thực tiễn Việt Nam cuối thế kỷ XIX – đầu thế kỷ XX</h3>
@@ -116,12 +118,12 @@ const archiveData: Record<number, NodeData> = {
       },
       {
         id: "sec-1-2",
-        tabTitle: "THỰC TIỄN THẾ GIỚI CUỐI THẾ KỶ XIX – ĐẦU THẾ KỶ XX",
-        badge: "Phần 2",
+        tabTitle: "Thực tiễn thế giới cuối thế kỷ XIX – đầu thế kỷ XX",
+        badge: "Mục 1b",
         est: "3 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ THỰC TIỄN • PHẦN 2/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ THỰC TIỄN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
           <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Thực tiễn thế giới cuối thế kỷ XIX – đầu thế kỷ XX</h3>
@@ -154,14 +156,23 @@ const archiveData: Record<number, NodeData> = {
           </div>
         </div>`
       },
+    ]
+  },
+  2: {
+    roman: "02",
+    title: "CƠ SỞ LÝ LUẬN",
+    subtitle: "Truyền thống dân tộc · Tinh hoa nhân loại · Mác – Lênin",
+    footnote: "Phần 2: Giá trị truyền thống, tinh hoa văn hóa và lý luận Mác – Lênin",
+    nextText: "TIẾP THEO",
+    dossiers: [
       {
-        id: "sec-1-3",
-        tabTitle: "GIÁ TRỊ TRUYỀN THỐNG TỐT ĐẸP CỦA DÂN TỘC",
-        badge: "Phần 3",
-        est: "3 phút đọc",
+        id: "sec-2-1",
+        tabTitle: "Giá trị truyền thống tốt đẹp của dân tộc",
+        badge: "Mục 2a",
+        est: "4 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ THỰC TIỄN • PHẦN 3/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ LÝ LUẬN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
           <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Giá trị truyền thống tốt đẹp của dân tộc Việt Nam</h3>
@@ -184,32 +195,22 @@ const archiveData: Record<number, NodeData> = {
             </div>
           </div>
           <div class="relative mt-5 p-4 bg-gradient-to-r from-[#2a1e16] to-[#1c130d] border-l-4 border-[#f2ca50] rounded-r border border-[#f2ca50]/30 shadow-md flex items-start gap-3">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-[#f2ca50]/15 border border-[#f2ca50]/50 flex items-center justify-center text-[#f2ca50] font-bold text-sm">
-              §
-            </div>
+            <div class="shrink-0 w-8 h-8 rounded-full bg-[#f2ca50]/15 border border-[#f2ca50]/50 flex items-center justify-center text-[#f2ca50] font-bold text-sm">§</div>
             <div>
               <div style="font-family:inherit" class="text-xs uppercase tracking-wider text-[#ffe088] font-bold mb-1">KẾT LUẬN</div>
               <p style="font-family:inherit" class="text-sm text-[#ece0d9] font-medium leading-relaxed">Chủ nghĩa yêu nước và tinh thần đoàn kết, nhân ái chính là cội nguồn sức mạnh, là động lực tinh thần to lớn nhất thôi thúc Nguyễn Tất Thành ra đi tìm đường cứu nước.</p>
             </div>
           </div>
         </div>`
-      }
-    ]
-  },
-  2: {
-    roman: "NỀN TẢNG II",
-    title: "Tinh hoa Văn hóa Nhân loại",
-    footnote: "Nền tảng 2 / 3: Giá trị tư tưởng Đông và Tây",
-    nextText: "HOÀN THÀNH NỀN TẢNG II → TIẾP TỤC",
-    dossiers: [
+      },
       {
-        id: "sec-2-1",
-        tabTitle: "VĂN HÓA PHƯƠNG ĐÔNG: NHO GIÁO & PHẬT GIÁO",
-        badge: "Phần 1",
+        id: "sec-2-2",
+        tabTitle: "Tinh hoa văn hóa nhân loại",
+        badge: "Mục 2b",
         est: "4 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">TINH HOA VĂN HÓA NHÂN LOẠI • PHẦN 1/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ LÝ LUẬN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
           <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Tinh hoa văn hóa nhân loại</h3>
@@ -237,18 +238,6 @@ const archiveData: Record<number, NodeData> = {
               <li class="flex items-start gap-2"><span style="color:#f2ca50">•</span><span>Kế thừa, phát triển những tư tưởng nhân bản, đạo đức tích cực trong Phật giáo vào việc xây dựng xã hội mới, con người mới Việt Nam.</span></li>
             </ul>
           </div>
-        </div>`
-      },
-      {
-        id: "sec-2-2",
-        tabTitle: "LÃO GIÁO & CÁC TRÀO LƯU PHƯƠNG ĐÔNG KHÁC",
-        badge: "Phần 2",
-        est: "4 phút đọc",
-        html: `<div class="space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">TINH HOA VĂN HÓA NHÂN LOẠI • PHẦN 2/3</span>
-            <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
-          </div>
           <div class="p-4 bg-[#1e1711] border border-[#f2ca50]/20 rounded space-y-3">
             <p style="font-family:inherit" class="text-[#f2ca50] font-bold text-base">Về Lão giáo (hoặc Đạo giáo),</p>
             <ul style="font-family:inherit;font-size:16px;color:rgba(236,224,217,0.95)" class="space-y-2 pl-3">
@@ -270,19 +259,7 @@ const archiveData: Record<number, NodeData> = {
             <div class="flex items-start gap-2"><span style="color:#f2ca50;font-weight:700">•</span><span>Đã phát triển sáng tạo các quan điểm về dân tộc, dân quyền, dân sinh của Tôn Trung Sơn trong cách mạng dân chủ tư sản thành tư tưởng đấu tranh cho Độc lập – Tự do – Hạnh phúc của con người và dân tộc Việt Nam theo con đường cách mạng vô sản.</span></div>
             <div class="flex items-start gap-2"><span style="color:#f2ca50;font-weight:700">•</span><span>Kế thừa và phát triển những tinh hoa trong tư tưởng, văn hóa phương Đông để giải quyết những vấn đề thực tiễn của cách mạng Việt Nam thời hiện đại.</span></div>
           </div>
-        </div>`
-      },
-      {
-        id: "sec-2-3",
-        tabTitle: "TINH HOA VĂN HÓA PHƯƠNG TÂY",
-        badge: "Phần 3",
-        est: "3 phút đọc",
-        html: `<div class="space-y-4">
-          <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">TINH HOA VĂN HÓA NHÂN LOẠI • PHẦN 3/3</span>
-            <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
-          </div>
-          <h4 style="font-family:inherit" class="text-lg text-[#f2ca50] font-bold">Tinh hoa văn hóa phương Tây</h4>
+          <h4 style="font-family:inherit" class="text-lg text-[#ffe088] font-bold mt-4">Tinh hoa văn hóa phương Tây</h4>
           <div style="font-family:inherit;font-size:16px;line-height:1.7" class="p-4 bg-[#1e1711] border-l-4 border-[#f2ca50] rounded-r space-y-3 text-[#ece0d9]/95">
             <div class="flex items-start gap-2">
               <span style="color:#f2ca50;font-weight:700;font-size:18px;line-height:1">✦</span>
@@ -298,26 +275,18 @@ const archiveData: Record<number, NodeData> = {
             </div>
           </div>
         </div>`
-      }
-    ]
-  },
-  3: {
-    roman: "NỀN TẢNG III",
-    title: "Chủ nghĩa Mác – Lênin & Nhân tố chủ quan",
-    footnote: "Nền tảng 3 / 3: Cơ sở lý luận quyết định & nhân tố chủ quan",
-    nextText: "HOÀN THÀNH CƠ SỞ HÌNH THÀNH → BẮT ĐẦU HÀNH TRÌNH",
-    dossiers: [
+      },
       {
-        id: "sec-3-1",
-        tabTitle: "CHỦ NGHĨA MÁC – LÊNIN",
-        badge: "Phần 1",
+        id: "sec-2-3",
+        tabTitle: "Chủ nghĩa Mác – Lênin",
+        badge: "Mục 2c",
         est: "4 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ LÝ LUẬN • PHẦN 1/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">CƠ SỞ LÝ LUẬN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
-          <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Chủ nghĩa Mác – Lênin và sự hình thành tư tưởng Hồ Chí Minh</h3>
+          <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Chủ nghĩa Mác – Lênin</h3>
           <div class="p-4 bg-gradient-to-b from-[#2b2016] to-[#1e1711] border border-[#f2ca50]/30 rounded space-y-3">
             <p style="font-family:inherit" class="text-[#f2ca50] font-bold text-base leading-snug">Chủ nghĩa Mác – Lênin là cơ sở lý luận, tiền đề lý luận quan trọng nhất, có vai trò quyết định trong quá trình hình thành tư tưởng Hồ Chí Minh:</p>
             <div class="h-px bg-[#f2ca50]/20"></div>
@@ -328,27 +297,34 @@ const archiveData: Record<number, NodeData> = {
             </ul>
           </div>
           <div class="relative mt-5 p-4 bg-gradient-to-r from-[#2a1e16] to-[#1c130d] border-l-4 border-[#f2ca50] rounded-r border border-[#f2ca50]/30 shadow-md flex items-start gap-3">
-            <div class="shrink-0 w-8 h-8 rounded-full bg-[#f2ca50]/15 border border-[#f2ca50]/50 flex items-center justify-center text-[#f2ca50] font-bold text-sm">
-              §
-            </div>
+            <div class="shrink-0 w-8 h-8 rounded-full bg-[#f2ca50]/15 border border-[#f2ca50]/50 flex items-center justify-center text-[#f2ca50] font-bold text-sm">§</div>
             <div>
               <div style="font-family:inherit" class="text-xs uppercase tracking-wider text-[#ffe088] font-bold mb-1">KẾT LUẬN</div>
               <p style="font-family:inherit" class="text-sm text-[#ece0d9] font-medium leading-relaxed">Chủ nghĩa Mác – Lênin là nền tảng kim chỉ nam, đưa cách mạng giải phóng dân tộc Việt Nam đi theo quỹ đạo của cách mạng vô sản thời đại mới.</p>
             </div>
           </div>
         </div>`
-      },
+      }
+    ]
+  },
+  3: {
+    roman: "03",
+    title: "NHÂN TỐ CHỦ QUAN\nHỒ CHÍ MINH",
+    subtitle: "Phẩm chất · Tài năng và tổng kết thực tiễn",
+    footnote: "Phần 3: Phẩm chất cá nhân và tài năng hoạt động thực tiễn",
+    nextText: "TIẾP THEO",
+    dossiers: [
       {
-        id: "sec-3-2",
-        tabTitle: "NHÂN TỐ CHỦ QUAN HỒ CHÍ MINH",
-        badge: "Phần 2",
+        id: "sec-3-1",
+        tabTitle: "Phẩm chất Hồ Chí Minh",
+        badge: "Mục 3a",
         est: "4 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">NHÂN TỐ CHỦ QUAN • PHẦN 2/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">NHÂN TỐ CHỦ QUAN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
-          <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Nhân tố chủ quan Hồ Chí Minh</h3>
+          <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Phẩm chất Hồ Chí Minh</h3>
           <div style="font-family:inherit;font-size:16px;line-height:1.7" class="p-4 bg-[#1e1711] border-l-4 border-[#f2ca50] rounded-r space-y-3">
             <p style="font-family:inherit" class="text-[#ffe088] font-bold text-lg">Phẩm chất cá nhân của Hồ Chí Minh:</p>
             <ul class="space-y-3 pl-3 text-[#ece0d9]/95">
@@ -361,15 +337,16 @@ const archiveData: Record<number, NodeData> = {
         </div>`
       },
       {
-        id: "sec-3-3",
-        tabTitle: "TÀI NĂNG HOẠT ĐỘNG VÀ TỔNG KẾT THỰC TIỄN",
-        badge: "Phần 3",
+        id: "sec-3-2",
+        tabTitle: "Tài năng hoạt động và tổng kết thực tiễn",
+        badge: "Mục 3b",
         est: "4 phút đọc",
         html: `<div class="space-y-4">
           <div class="flex items-center justify-between pb-3 border-b border-[#f2ca50]/20">
-            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">HOẠT ĐỘNG THỰC TIỄN • PHẦN 3/3</span>
+            <span style="font-family:inherit" class="text-xs text-[#f2ca50] tracking-wider uppercase font-semibold">NHÂN TỐ CHỦ QUAN</span>
             <span style="font-family:inherit" class="text-xs text-[#ece0d9]/60">TƯ TƯỞNG HỒ CHÍ MINH</span>
           </div>
+          <h3 style="font-family:inherit" class="text-xl text-[#f2ca50] font-bold leading-snug">Tài năng hoạt động và tổng kết thực tiễn</h3>
           <div style="font-family:inherit;font-size:16px;line-height:1.7" class="p-4 bg-[#1e1711] border-l-4 border-[#f2ca50] rounded-r space-y-4">
             <p style="font-family:inherit" class="text-[#ffe088] font-bold text-lg">Tài năng hoạt động và tổng kết thực tiễn phát triển lý luận:</p>
             <ul class="space-y-3 pl-3 text-[#ece0d9]/95">
@@ -479,7 +456,6 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
   }, []);
 
   const openNode = (nodeId: number) => {
-    if (nodeId > 1 && !completedNodes[nodeId - 1] && activeNodeId !== nodeId) return;
     setPanelNodeId(nodeId);
     setActiveDossierIdx(0);
     setPanelOpen(true);
@@ -492,14 +468,14 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
 
   const completeCurrentNode = () => {
     const nodeId = panelNodeId;
-    setCompletedNodes(prev => ({ ...prev, [nodeId]: true }));
+    setCompletedNodes(prev => {
+      const next = { ...prev, [nodeId]: true };
+      if (next[1] && next[2] && next[3]) {
+        setTimeout(() => setIsFinalUnlocked(true), 400);
+      }
+      return next;
+    });
     closePanel();
-
-    if (nodeId < 3) {
-      setTimeout(() => setActiveNodeId(nodeId + 1), 600);
-    } else {
-      setTimeout(() => setIsFinalUnlocked(true), 400);
-    }
   };
 
   const resetFlow = () => {
@@ -517,13 +493,10 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
   const currentNode = archiveData[panelNodeId];
   const currentDossier = currentNode?.dossiers[activeDossierIdx];
 
-  const progressLabel = completedNodes[3]
-    ? "ĐÃ HOÀN THÀNH 3 NỀN TẢNG"
-    : activeNodeId === 3
-    ? "NỀN TẢNG 3 / 3 : CHỦ NGHĨA MÁC – LÊNIN"
-    : activeNodeId === 2
-    ? "NỀN TẢNG 2 / 3 : TINH HOA VĂN HÓA NHÂN LOẠI"
-    : "NỀN TẢNG 1 / 3 : CƠ SỞ THỰC TIỄN";
+  const countCompleted = Object.values(completedNodes).filter(Boolean).length;
+  const progressLabel = countCompleted === 3
+    ? "ĐÃ XEM TOÀN BỘ 3 PHẦN"
+    : `ĐÃ XEM ${countCompleted} / 3 PHẦN`;
 
   return (
     <div
@@ -602,79 +575,35 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
           {/* Top row: circles only */}
           <div className="relative w-full flex items-center justify-between max-w-4xl px-4 md:px-12 mt-6">
 
-            {/* Connecting lines — top=50% aligns with the center of the circle-only row */}
-            {/* Line 1->2 */}
-            <div className="absolute pointer-events-none" style={{ left: "20%", right: "52%", top: "50%", transform: "translateY(-50%)", height: 6, zIndex: 0 }}>
-              <div className="w-full h-full relative" style={{ borderBottom: "1px dashed rgba(242,202,80,0.25)" }}>
-                <span className="absolute right-0 -top-2" style={{ fontFamily: "inherit", color: "rgba(242,202,80,0.3)", fontSize: 10 }}>▸</span>
-              </div>
-              <div className="absolute inset-0 origin-left transition-all duration-1000" style={{
-                background: "linear-gradient(to right, #f2ca50, #ffe088, #f2ca50)",
-                boxShadow: "0 0 15px rgba(242,202,80,0.8)",
-                opacity: completedNodes[1] ? 1 : 0,
-                transform: completedNodes[1] ? "scaleX(1)" : "scaleX(0)"
-              }}>
-                <div className="w-full h-full animate-pulse" style={{ borderBottom: "2px solid #ffe088" }} />
-              </div>
-            </div>
-            {/* Line 2->3 */}
-            <div className="absolute pointer-events-none" style={{ left: "52%", right: "20%", top: "50%", transform: "translateY(-50%)", height: 6, zIndex: 0 }}>
-              <div className="w-full h-full relative" style={{ borderBottom: "1px dashed rgba(242,202,80,0.25)" }}>
-                <span className="absolute right-0 -top-2" style={{ fontFamily: "inherit", color: "rgba(242,202,80,0.3)", fontSize: 10 }}>▸</span>
-              </div>
-              <div className="absolute inset-0 origin-left transition-all duration-1000" style={{
-                background: "linear-gradient(to right, #f2ca50, #ffe088, #f2ca50)",
-                boxShadow: "0 0 15px rgba(242,202,80,0.8)",
-                opacity: completedNodes[2] ? 1 : 0,
-                transform: completedNodes[2] ? "scaleX(1)" : "scaleX(0)"
-              }}>
-                <div className="w-full h-full animate-pulse" style={{ borderBottom: "2px solid #ffe088" }} />
-              </div>
-            </div>
-
             {/* CIRCLE BUTTONS ONLY */}
             {[1, 2, 3].map((nodeId) => {
               const isCompleted = completedNodes[nodeId];
-              const isActive = activeNodeId === nodeId;
-              const isLocked = !isCompleted && !isActive;
-              const romans = ["NỀN TẢNG I", "NỀN TẢNG II", "NỀN TẢNG III"];
+              const romans = ["01", "02", "03"];
 
               return (
                 <div key={nodeId} className="relative flex items-center justify-center z-10 group">
                   <button
                     onClick={() => openNode(nodeId)}
-                    disabled={isLocked}
-                    className={`node-btn relative rounded-full border-2 transition-all duration-500 flex flex-col items-center justify-center focus:outline-none ${isCompleted || isActive ? "node-pulse cursor-pointer hover:scale-105 active:scale-95" : "cursor-not-allowed"}`}
+                    className="node-btn relative rounded-full border-2 transition-all duration-500 flex flex-col items-center justify-center focus:outline-none node-pulse cursor-pointer hover:scale-105 active:scale-95"
                     style={{
                       width: "clamp(96px, 10vw, 128px)",
                       height: "clamp(96px, 10vw, 128px)",
-                      background: isLocked ? "#1b140f" : "#201912",
-                      borderColor: isLocked ? "rgba(242,202,80,0.3)" : "#f2ca50",
-                      opacity: isLocked ? 0.4 : 1,
-                      boxShadow: isLocked ? "none" : "0 0 25px rgba(242,202,80,0.45)"
+                      background: isCompleted ? "#2b2016" : "#201912",
+                      borderColor: "#f2ca50",
+                      boxShadow: "0 0 25px rgba(242,202,80,0.45)"
                     }}
                   >
-                    <div className="absolute inset-[6px] rounded-full pointer-events-none" style={{ border: isLocked ? "1px solid rgba(242,202,80,0.2)" : "1px solid rgba(242,202,80,0.4)" }} />
-                    <div className="absolute inset-[12px] rounded-full pointer-events-none" style={{ border: isLocked ? "1px dashed rgba(242,202,80,0.15)" : "1px dashed rgba(242,202,80,0.25)" }} />
+                    <div className="absolute inset-[6px] rounded-full pointer-events-none" style={{ border: "1px solid rgba(242,202,80,0.4)" }} />
+                    <div className="absolute inset-[12px] rounded-full pointer-events-none" style={{ border: "1px dashed rgba(242,202,80,0.25)" }} />
 
-                    {isLocked ? (
-                      <div style={{ color: "rgba(242,202,80,0.6)", marginBottom: 4 }}>
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" />
-                        </svg>
-                      </div>
-                    ) : (
-                      <span className="compass-spin" style={{ fontFamily: "inherit", color: "#f2ca50", fontSize: "clamp(20px,3vw,28px)", fontWeight: 700, marginBottom: 2 }}>✦</span>
-                    )}
+                    <span className="compass-spin" style={{ fontFamily: "inherit", color: "#f2ca50", fontSize: "clamp(20px,3vw,28px)", fontWeight: 700, marginBottom: 2 }}>✦</span>
 
-                    <span style={{ fontFamily: "inherit", color: isLocked ? "rgba(242,202,80,0.4)" : "rgba(242,202,80,0.7)", fontSize: 10, letterSpacing: "0.15em", marginBottom: 2 }}>{romans[nodeId - 1]}</span>
+                    <span style={{ fontFamily: "inherit", color: "rgba(242,202,80,0.7)", fontSize: 10, letterSpacing: "0.15em", marginBottom: 2 }}>{romans[nodeId - 1]}</span>
 
                     {isCompleted ? (
-                      <span style={{ fontFamily: "inherit", fontSize: 9, color: "#86efac", background: "rgba(5,46,22,0.4)", border: "1px solid rgba(74,222,128,0.4)", padding: "2px 8px", borderRadius: 9999 }}>Hoàn thành ✓</span>
-                    ) : isActive ? (
-                      <span style={{ fontFamily: "inherit", fontSize: 9, color: "#f2ca50", background: "rgba(242,202,80,0.1)", border: "1px solid rgba(242,202,80,0.3)", padding: "2px 8px", borderRadius: 9999 }}>Đang mở</span>
+                      <span style={{ fontFamily: "inherit", fontSize: 9, color: "#86efac", background: "rgba(5,46,22,0.4)", border: "1px solid rgba(74,222,128,0.4)", padding: "2px 8px", borderRadius: 9999 }}>Đã xem ✓</span>
                     ) : (
-                      <span style={{ fontFamily: "inherit", fontSize: 9, color: "rgba(236,224,217,0.4)", background: "rgba(0,0,0,0.3)", border: "1px solid rgba(242,202,80,0.1)", padding: "2px 8px", borderRadius: 9999 }}>Khóa</span>
+                      <span style={{ fontFamily: "inherit", fontSize: 9, color: "rgba(236,224,217,0.5)", background: "rgba(35,27,20,0.6)", border: "1px solid rgba(236,224,217,0.2)", padding: "2px 8px", borderRadius: 9999 }}>Chưa xem</span>
                     )}
                   </button>
                 </div>
@@ -685,9 +614,7 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
           {/* Bottom row: labels aligned under each circle */}
           <div className="w-full flex justify-between max-w-4xl px-4 md:px-12 mt-4">
             {[1, 2, 3].map((nodeId) => {
-              const isCompleted = completedNodes[nodeId];
-              const isActive = activeNodeId === nodeId;
-              const isLocked = !isCompleted && !isActive;
+              const node = archiveData[nodeId];
 
               return (
                 <div key={nodeId} className="flex flex-col items-center text-center" style={{ width: "clamp(96px, 10vw, 128px)" }}>
@@ -695,55 +622,27 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
                     <h3
                       style={{
                         fontFamily: "inherit",
-                        color: isLocked ? "rgba(236,224,217,0.5)" : "#f2ca50",
+                        color: "#f2ca50",
                         fontWeight: 700,
-                        fontSize: "clamp(13px,1.4vw,15px)",
+                        fontSize: "clamp(12px,1.3vw,14px)",
                         letterSpacing: "0.02em",
                         lineHeight: 1.35,
                       }}
                     >
-                      {nodeId === 1 && <span className="whitespace-nowrap inline-block">CƠ SỞ THỰC TIỄN</span>}
-                      {nodeId === 2 && (
-                        <>
-                          <span className="whitespace-nowrap inline-block">TINH HOA VĂN HÓA</span>
-                          <br />
-                          <span className="whitespace-nowrap inline-block">NHÂN LOẠI</span>
-                        </>
-                      )}
-                      {nodeId === 3 && (
-                        <span className="whitespace-nowrap inline-block">CHỦ NGHĨA MÁC – LÊNIN</span>
-                      )}
+                      {node.title.split("\n").map((line, i) => (
+                        <span key={i} className="whitespace-nowrap block">{line}</span>
+                      ))}
                     </h3>
                     <p
                       style={{
                         fontFamily: "inherit",
-                        color: isLocked ? "rgba(236,224,217,0.4)" : "rgba(236,224,217,0.75)",
-                        fontSize: "clamp(11px,1.1vw,12px)",
+                        color: "rgba(236,224,217,0.75)",
+                        fontSize: "clamp(11px,1.0vw,12px)",
                         marginTop: 4,
                         lineHeight: 1.45,
                       }}
                     >
-                      {nodeId === 1 && (
-                        <>
-                          <span className="whitespace-nowrap inline-block">Bối cảnh lịch sử &amp;</span>
-                          <br />
-                          <span className="whitespace-nowrap inline-block">phong trào</span>
-                        </>
-                      )}
-                      {nodeId === 2 && (
-                        <>
-                          <span className="whitespace-nowrap inline-block">Giá trị tư tưởng</span>
-                          <br />
-                          <span className="whitespace-nowrap inline-block">Đông và Tây</span>
-                        </>
-                      )}
-                      {nodeId === 3 && (
-                        <>
-                          <span className="whitespace-nowrap inline-block">Cơ sở lý luận &amp;</span>
-                          <br />
-                          <span className="whitespace-nowrap inline-block">nhân tố chủ quan</span>
-                        </>
-                      )}
+                      {node.subtitle}
                     </p>
                   </div>
                 </div>
@@ -754,7 +653,7 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
           {/* Hint */}
           <div className={`transition-opacity duration-500 ${isFinalUnlocked ? "opacity-0" : "opacity-100"}`}
             style={{ fontFamily: "inherit", color: "rgba(242,202,80,0.75)", fontSize: 11, letterSpacing: "0.18em", display: "flex", alignItems: "center", gap: 8, marginTop: 12 }}>
-            <span className="animate-bounce" style={{ color: "#f2ca50" }}>↓</span> Nhấn vào vòng tròn sáng để khám phá nền tảng
+            <span className="animate-bounce" style={{ color: "#f2ca50" }}>↓</span> Nhấn vào vòng tròn sáng để tìm hiểu từng cơ sở
           </div>
         </div>
 
@@ -762,7 +661,7 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
         <div className={`mt-6 transition-all duration-1000 transform ${isFinalUnlocked ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 translate-y-6 pointer-events-none"}`}>
           <div className="flex flex-col items-center gap-3">
             <div style={{ fontFamily: "inherit", color: "#f2ca50", fontSize: 11, letterSpacing: "0.28em" }} className="flex items-center gap-3">
-              <span>✦</span> ĐÃ HOÀN THÀNH TÌM HIỂU CÁC NỀN TẢNG TƯ TƯỞNG <span>✦</span>
+              <span>✦</span> ĐÃ HOÀN THÀNH TÌM HIỂU CÁC CƠ SỞ HÌNH THÀNH TƯ TƯỞNG <span>✦</span>
             </div>
             <button onClick={handleStart} className="group relative inline-flex items-center justify-center transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer"
               style={{ padding: "14px 48px", background: "linear-gradient(to bottom, #3a2c1a, #2a1e12, #1a120b)", border: "2px solid #f2ca50", color: "#ffe088", fontFamily: "inherit", letterSpacing: "0.25em", fontWeight: 700, fontSize: 16, boxShadow: "0 0 35px rgba(242,202,80,0.6)" }}>
@@ -801,7 +700,7 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
             <div className="flex items-center gap-3">
               <span style={{ fontFamily: "inherit", fontSize: 11, letterSpacing: "0.2em", color: "rgba(242,202,80,0.8)", background: "rgba(242,202,80,0.1)", padding: "4px 10px", border: "1px solid rgba(242,202,80,0.3)" }}>{currentNode?.roman}</span>
               <div className="h-4 w-px hidden sm:block" style={{ background: "rgba(242,202,80,0.3)" }} />
-              <h2 style={{ fontFamily: "inherit", color: "#f2ca50", fontWeight: 700, fontSize: "clamp(15px,2vw,20px)", letterSpacing: "0.03em" }}>{currentNode?.title}</h2>
+              <h2 style={{ fontFamily: "inherit", color: "#f2ca50", fontWeight: 700, fontSize: "clamp(15px,2vw,20px)", letterSpacing: "0.03em" }}>{currentNode?.title.replace("\n", " ")}</h2>
             </div>
             <div className="flex items-center gap-4">
               <div className="hidden md:flex items-center gap-2 px-3 py-1" style={{ fontFamily: "inherit", fontSize: 11, color: "rgba(242,202,80,0.7)", background: "#16100b", border: "1px solid rgba(242,202,80,0.15)" }}>
@@ -820,7 +719,7 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
             <div className="w-full md:w-80 lg:w-96 flex flex-col shrink-0" style={{ background: "#1e1711", borderRight: "1px solid rgba(242,202,80,0.2)", borderBottom: "1px solid rgba(242,202,80,0.2)" }}>
               <div className="px-4 py-2.5 flex items-center justify-between" style={{ fontFamily: "inherit", fontSize: 11, letterSpacing: "0.18em", color: "rgba(242,202,80,0.8)", background: "rgba(23,16,11,0.8)", borderBottom: "1px solid rgba(242,202,80,0.15)" }}>
                 <span className="font-bold">NỘI DUNG CHÍNH</span>
-                <span style={{ fontSize: 10, color: "rgba(236,224,217,0.5)" }}>3 PHẦN</span>
+                <span style={{ fontSize: 10, color: "rgba(236,224,217,0.5)" }}>{currentNode?.dossiers.length} PHẦN</span>
               </div>
               <div className="flex-1 overflow-y-auto custom-gold-scrollbar p-3 space-y-2">
                 {currentNode?.dossiers.map((d, idx) => {
@@ -857,6 +756,7 @@ export default function HeroOverlay({ onStart }: HeroOverlayProps) {
                 ref={viewportRef}
                 className="h-full overflow-y-auto custom-gold-scrollbar p-5 md:p-8"
                 dangerouslySetInnerHTML={currentDossier ? { __html: currentDossier.html } : undefined}
+                suppressHydrationWarning
               />
             </div>
           </div>
