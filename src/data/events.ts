@@ -25,7 +25,7 @@ export interface HistoricalEvent {
   ngay: string;
   ngaySort: string;
   tieuDe: string;
-  moTa: string;
+  moTa: string | string[];
   diaDiem: string;
   lat: number;
   lng: number;
@@ -69,7 +69,7 @@ export const markers: Marker[] = Array.from(uniqueLocations.values());
 export const events: HistoricalEvent[] = hcmData.events.map((e, index) => {
   const markerId = `marker-${e.lat}-${e.lng}`;
   
-  let detailsText = e.moTa;
+  let detailsText = Array.isArray(e.moTa) ? e.moTa.join('\n\n') : e.moTa;
 
   return {
     id: e.id,
@@ -89,9 +89,9 @@ export const events: HistoricalEvent[] = hcmData.events.map((e, index) => {
     yearLabel: e.ngay,
     sortYear: parseInt(e.ngaySort.split("-")[0], 10),
     title: e.tieuDe,
-    description: e.moTa,
+    description: detailsText,
     markerId: markerId,
-    image: index < 10 ? `/media/event-${index + 1}.jpg` : `/media/event-${e.thoiKy}.jpg`, // Use specific images for first 10 events, fallback to period
+    image: index < 23 ? `/media/event-${index + 1}.jpg` : `/media/event-${e.thoiKy}.jpg`, // Use specific images for first 23 events, fallback to period
     details: detailsText,
   };
 });

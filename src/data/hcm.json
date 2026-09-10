@@ -13,8 +13,12 @@
       "thoiKy": 1,
       "ngay": "Trước 1911",
       "ngaySort": "1900-01-01",
-      "tieuDe": "Tư tưởng yêu nước hình thành từ quê hương, gia đình",
-      "moTa": "Quê hương Nghệ An - vùng đất giàu truyền thống yêu nước, lắm nhân tài và anh hùng yêu nước nổi tiếng trong lịch sử dân tộc. Thuở thiếu niên chịu ảnh hưởng tinh thần yêu nước, thương dân và nhân cách của người cha - cụ Nguyễn Sinh Sắc (đỗ phó bảng) - và tình cảm của người mẹ - cụ Hoàng Thị Loan, người phụ nữ nhân hậu, tần tảo, đảm đang, hết mực thương yêu chồng con và ăn ở nhân đức với mọi người. Được theo học các vị túc nho, tiếp xúc nhiều sách báo tiến bộ tại Vinh, kinh đô Huế; hiểu rõ tình cảnh nước nhà bị giặc ngoại xâm đô hộ.",
+      "tieuDe": "Nguồn gốc hình thành tư tưởng",
+      "moTa": [
+        "Quê hương Nghệ An: vùng đất giàu truyền thống yêu nước, lắm nhân tài và anh hùng yêu nước nổi tiếng trong lịch sử dân tộc.",
+        "Gia đình: chịu ảnh hưởng tinh thần yêu nước, thương dân và nhân cách của người cha - cụ Nguyễn Sinh Sắc (đỗ phó bảng) - và tấm lòng nhân hậu, tần tảo, đảm đang của người mẹ - cụ Hoàng Thị Loan.",
+        "Giáo dục và xã hội: được theo học các vị túc nho, tiếp xúc nhiều sách báo tiến bộ; hiểu rõ tình cảnh nước nhà bị giặc ngoại xâm đô hộ."
+      ],
       "diaDiem": "Nghệ An",
       "lat": 18.6796,
       "lng": 105.6813
@@ -47,7 +51,7 @@
       "ngay": "05/06/1911",
       "ngaySort": "1911-06-05",
       "tieuDe": "Ra nước ngoài tìm đường cứu nước",
-      "moTa": "Khâm phục nhưng không tán thành phương pháp cứu nước của các bậc tiền bối (Phan Bội Châu, Phan Châu Trinh, Hoàng Hoa Thám...). Ra đi tìm hiểu những gì ẩn giấu sau sức mạnh của kẻ thù và học hỏi kinh nghiệm cách mạng thế giới.",
+      "moTa": "Khâm phục nhưng không tán thành phương pháp, khuynh hướng cứu nước của các bậc tiền bối cách mạng. → Ra đi tìm hiểu những gì ẩn giấu sau sức mạnh của kẻ thù và học hỏi kinh nghiệm cách mạng thế giới.",
       "diaDiem": "Sài Gòn (Bến Nhà Rồng)",
       "yNghia": "Mở đầu hành trình gần 30 năm bôn ba tìm đường cứu nước, khác biệt căn bản với con đường của các bậc tiền bối cách mạng đương thời.",
       "lat": 10.7626,
@@ -62,6 +66,7 @@
       "moTa": "Xác định đúng bản chất, thủ đoạn, tội ác của chủ nghĩa thực dân và tình cảnh nhân dân các nước thuộc địa. Qua cuộc hành trình từ Pháp đến nhiều nước trên thế giới, Người dần hình thành một nhận thức mới về tình cảnh chung của các dân tộc bị áp bức.",
       "diaDiem": "Nước Pháp (và nhiều nước)",
       "isRegionLevel": true,
+      "eventsBoxLabel": "CÁC DÒNG SỰ KIỆN TẠI PHÁP",
       "ketQua": "Nhân dân lao động các nước, trong đó có giai cấp công nhân, đều bị bóc lột nên có thể là bạn của nhau; còn chủ nghĩa đế quốc, bọn thực dân ở đâu cũng là kẻ bóc lột, là kẻ thù của nhân dân lao động.",
       "lat": 46.2276,
       "lng": 2.2137
@@ -86,6 +91,7 @@
       "moTa": "Gia nhập Đảng Xã hội của giai cấp công nhân Pháp.",
       "diaDiem": "Paris, Pháp",
       "yNghia": "Theo Người, đây là tổ chức theo đuổi lý tưởng cao quý của Đại Cách mạng Pháp: Tự do, bình đẳng, bác ái.",
+      "showYNghiaBox": true,
       "lat": 48.8566,
       "lng": 2.3522
     },
@@ -98,6 +104,7 @@
       "moTa": "Thay mặt những người Việt Nam yêu nước ở Pháp, gửi Yêu sách của nhân dân An Nam tới Hội nghị Vécxây, đòi quyền tự do, dân chủ cho nhân dân Việt Nam.",
       "diaDiem": "Versailles, Pháp",
       "yNghia": "Đánh dấu bước nhận thức mới về quyền tự do, dân chủ của nhân dân trong tư tưởng Hồ Chí Minh.",
+      "showYNghiaBox": true,
       "lat": 48.8049,
       "lng": 2.1204
     },
@@ -119,9 +126,10 @@
       "ngay": "12/1920",
       "ngaySort": "1920-12-01",
       "tieuDe": "Đại hội Tua - Sáng lập Đảng Cộng sản Pháp",
-      "moTa": "Cùng những người phái tả trong Đảng Xã hội Pháp tham dự Đại hội ở thành phố Tua.",
+      "moTa": "Cùng những người phái tả trong Đảng Xã hội Pháp tham dự Đại hội ở thành phố Tua, bỏ phiếu tán thành Quốc tế Cộng sản, tham gia sáng lập Đảng Cộng sản Pháp.",
       "diaDiem": "Tours (Tua), Pháp",
       "yNghia": "Bước ngoặt: chủ nghĩa yêu nước kết hợp chặt chẽ với lập trường cách mạng vô sản.",
+      "showYNghiaBox": true,
       "lat": 47.3941,
       "lng": 0.6848
     },

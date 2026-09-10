@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useRef, useEffect } from "react";
+import { useState, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { events, getEventsByMarker, type HistoricalEvent } from "@/data/events";
 
@@ -31,9 +31,6 @@ export default function Home() {
   const [activePeriodId, setActivePeriodId] = useState<number>(1);
 
 
-  const playTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const playIndexRef = useRef(0);
-
   // Navigate to event with cinematic transition
   const navigateToEvent = useCallback(
     (event: HistoricalEvent, isFirstEvent = false) => {
@@ -52,10 +49,21 @@ export default function Home() {
     setShowPopup(true);
   }, []);
 
+  // Safety fallback: if isTransitioning is stuck for > 8s, force reset it
+  useEffect(() => {
+    if (isTransitioning) {
+      const timer = setTimeout(() => {
+        setIsTransitioning(false);
+        setShowPopup(true);
+      }, 8000);
+      return () => clearTimeout(timer);
+    }
+  }, [isTransitioning]);
+
   const handleHeroStart = useCallback(() => {
     setShowHero(false);
     setTimeout(() => {
-      setIsPlaying(false);
+      setIsPlaying(true);
       navigateToEvent(events[0], true);
     }, 500);
   }, [navigateToEvent]);
@@ -153,14 +161,24 @@ export default function Home() {
   }, [isPlaying, isTransitioning, activeEvent, handleNextEvent]);
 
   const handlePlayToggle = useCallback(() => {
-    setIsPlaying((prev) => {
-      if (!prev) {
-        // Start from beginning
+    if (isPlaying) {
+      setIsPlaying(false);
+      return;
+    }
+    if (!activeEvent) {
+      navigateToEvent(events[0], true);
+    } else {
+      const currentIndex = events.findIndex((e) => e.id === activeEvent.id);
+      if (currentIndex === events.length - 1) {
         navigateToEvent(events[0], true);
-        return true;
       }
-      return false;
-    });
+    }
+    setIsPlaying(true);
+  }, [isPlaying, activeEvent, navigateToEvent]);
+
+  const handleRestart = useCallback(() => {
+    setIsPlaying(true);
+    navigateToEvent(events[0], true);
   }, [navigateToEvent]);
 
   return (
@@ -203,6 +221,7 @@ export default function Home() {
           isPlaying={isPlaying}
           onEventClick={handleEventClick}
           onPlayToggle={handlePlayToggle}
+          onRestart={handleRestart}
           collapsed={timelineCollapsed}
           onToggleCollapse={() => setTimelineCollapsed(!timelineCollapsed)}
           activePeriodId={activePeriodId}

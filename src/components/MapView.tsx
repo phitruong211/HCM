@@ -116,6 +116,12 @@ export default function MapView({
   const markersRef = useRef<Map<string, mapboxgl.Marker>>(new Map());
   const mapLoadedRef = useRef(false);
   const animatingRef = useRef(false);
+  const isPlayingRef = useRef(isPlaying);
+
+  useEffect(() => {
+    isPlayingRef.current = isPlaying;
+  }, [isPlaying]);
+
   // Track all route coordinates drawn so far
   const routeCoordsRef = useRef<[number, number][]>([]);
 
@@ -587,7 +593,7 @@ export default function MapView({
     bounds.extend(prevMarker.coordinates);
     bounds.extend(activeMarker.coordinates);
 
-    if (!isPlaying) {
+    if (!isPlayingRef.current) {
       // Manual click: skip line drawing and fitBounds, fly directly to destination
       map.flyTo({
         center: activeMarker.coordinates,
@@ -676,9 +682,14 @@ export default function MapView({
     return () => {
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+        if (animatingRef.current) {
+          animatingRef.current = false;
+          onTransitionDone();
+        }
       }
     };
-  }, [activeEvent, prevEvent, isPlaying, getMapPadding, onTransitionDone, clearTerritoryHighlight, updateTerritoryHighlight]);
+  }, [activeEvent, prevEvent, getMapPadding, onTransitionDone, clearTerritoryHighlight, updateTerritoryHighlight]);
 
   return (
     <div className="map-wrapper">
