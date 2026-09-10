@@ -24,11 +24,6 @@ export default function EventPopup({
   onSelectEvent,
 }: EventPopupProps) {
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
-  
-  useEffect(() => {
-    setShowDetails(false);
-  }, [event]);
   
   const currentIndex = events.findIndex((e) => e.id === event.id);
   const isFirst = currentIndex === 0;
@@ -42,13 +37,6 @@ export default function EventPopup({
     <>
       <div className="event-popup-overlay">
         <div className="event-popup-container">
-          {/* Details Panel (left side of popup) */}
-          {event.details && showDetails && (
-            <div className="event-popup-details-panel">
-              <ReactMarkdown>{event.details}</ReactMarkdown>
-            </div>
-          )}
-
           <div className="event-popup-card has-image">
           {/* Image Header */}
           {event.image && (
@@ -57,6 +45,7 @@ export default function EventPopup({
                 src={event.image} 
                 alt={event.title} 
                 fill 
+                unoptimized
                 className="event-popup-media-img"
               />
               <div className="event-popup-media-overlay">
@@ -94,14 +83,10 @@ export default function EventPopup({
 
           {/* Body */}
           <div className="event-popup-body">
-            <p className="event-popup-description">{event.description}</p>
-            {event.details && (
-              <button 
-                className="btn-read-more"
-                onClick={() => setShowDetails(!showDetails)}
-              >
-                {showDetails ? "Thu gọn" : "Xem thêm"}
-              </button>
+            {event.details ? (
+              <ReactMarkdown>{event.details}</ReactMarkdown>
+            ) : (
+              <p className="event-popup-description">{event.description}</p>
             )}
           </div>
 
@@ -184,6 +169,7 @@ export default function EventPopup({
                       src={event.image!} 
                       alt={event.title}
                       fill
+                      unoptimized
                       className="lightbox-img"
                     />
                   </TransformComponent>

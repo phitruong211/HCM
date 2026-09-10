@@ -1,6 +1,7 @@
 "use client";
 
-import { events, markers, type HistoricalEvent } from "@/data/events";
+import { useState } from "react";
+import { events, markers, periods, type HistoricalEvent } from "@/data/events";
 
 interface TimelineProps {
   activeEventId: string | null;
@@ -9,6 +10,8 @@ interface TimelineProps {
   onPlayToggle: () => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
+  activePeriodId: number;
+  onPeriodChange: (id: number) => void;
 }
 
 export default function Timeline({
@@ -18,7 +21,20 @@ export default function Timeline({
   onPlayToggle,
   collapsed,
   onToggleCollapse,
+  activePeriodId,
+  onPeriodChange,
 }: TimelineProps) {
+  const [expandedEventId, setExpandedEventId] = useState<string | null>(null);
+
+  const activePeriod = periods.find((p) => p.id === activePeriodId);
+  const visibleEvents = events.filter((e) => e.thoiKy === activePeriodId);
+
+  const handleEventClick = (event: HistoricalEvent) => {
+    // Toggle expand state if clicking the same event, otherwise expand it
+    setExpandedEventId((prev) => (prev === event.id ? null : event.id));
+    onEventClick(event);
+  };
+
   return (
     <div className={`timeline-panel ${collapsed ? "collapsed" : ""}`}>
       <button
@@ -70,39 +86,85 @@ export default function Timeline({
         </button>
       </div>
 
+      {/* TABS FOR PERIODS */}
+      <div className="timeline-tabs">
+        {periods.map((p) => (
+          <button
+            key={p.id}
+            className={`timeline-tab ${activePeriodId === p.id ? "active" : ""}`}
+            onClick={() => onPeriodChange(p.id)}
+            title={p.range}
+          >
+            {p.name.replace("Thời kỳ ", "TK")}
+          </button>
+        ))}
+      </div>
+
+      {/* ACTIVE PERIOD SUMMARY */}
+      {activePeriod && (
+        <div className="period-summary">
+          <div className="period-summary-range">{activePeriod.range}</div>
+          <div className="period-summary-text">{activePeriod.summary}</div>
+        </div>
+      )}
+
+      {/* EVENTS LIST */}
       <div className="timeline-events">
-        {events.map((event) => {
+        {visibleEvents.map((event) => {
           const marker = markers.find((m) => m.id === event.markerId);
+          const isExpanded = expandedEventId === event.id;
+          const isActive = activeEventId === event.id;
+
           return (
             <div
               key={event.id}
-              className={`timeline-event-item ${
-                activeEventId === event.id ? "active" : ""
+              className={`timeline-event-item ${isActive ? "active" : ""} ${
+                isExpanded ? "expanded" : ""
               }`}
-              onClick={() => onEventClick(event)}
             >
-              <span
-                className={`timeline-event-marker ${
-                  activeEventId === event.id ? "active" : ""
-                }`}
-              />
-              <div className="timeline-event-info">
-                <div className="timeline-event-year">{event.yearLabel}</div>
-                <div className="timeline-event-title">{event.title}</div>
-                {marker && (
-                  <div className="timeline-event-location">
-                    <svg
-                      width="10"
-                      height="10"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                      <circle cx="12" cy="10" r="3" />
-                    </svg>
-                    {marker.name}
+              <span className={`timeline-event-marker ${isActive ? "active" : ""}`} />
+              
+              <div className="timeline-event-content">
+                {/* Header (Always visible) */}
+                <div 
+                  className="timeline-event-header"
+                  onClick={() => handleEventClick(event)}
+                >
+                  <div className="timeline-event-year">{event.yearLabel}</div>
+                  <div className="timeline-event-title">{event.title}</div>
+                  {marker && (
+                    <div className="timeline-event-location">
+                      <svg
+                        width="10"
+                        height="10"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      >
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                        <circle cx="12" cy="10" r="3" />
+                      </svg>
+                      {marker.name}
+                    </div>
+                  )}
+                </div>
+
+                {/* Expanded Details */}
+                {isExpanded && (event.yNghia || event.ketQua) && (
+                  <div className="timeline-event-details">
+                    {event.ketQua && (
+                      <div className="timeline-event-highlight">
+                        <div className="highlight-label">Kết quả</div>
+                        <div className="highlight-content">{event.ketQua}</div>
+                      </div>
+                    )}
+                    {event.yNghia && (
+                      <div className="timeline-event-highlight">
+                        <div className="highlight-label">Ý nghĩa</div>
+                        <div className="highlight-content">{event.yNghia}</div>
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
