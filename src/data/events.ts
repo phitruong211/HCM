@@ -91,7 +91,7 @@ export const events: HistoricalEvent[] = hcmData.events.map((e, index) => {
     title: e.tieuDe,
     description: e.moTa,
     markerId: markerId,
-    image: index < 10 ? `/media/event-${index + 1}.jpg` : `/media/event-${e.thoiKy}.jpg`, // Use specific images for first 10 events, fallback to period
+    image: index < 23 ? `/media/event-${index + 1}.jpg` : `/media/event-${e.thoiKy}.jpg`, // Use specific images for first 23 events, fallback to period
     details: detailsText,
   };
 });
