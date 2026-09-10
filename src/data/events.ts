@@ -25,7 +25,7 @@ export interface HistoricalEvent {
   ngay: string;
   ngaySort: string;
   tieuDe: string;
-  moTa: string;
+  moTa: string | string[];
   diaDiem: string;
   lat: number;
   lng: number;
@@ -69,7 +69,7 @@ export const markers: Marker[] = Array.from(uniqueLocations.values());
 export const events: HistoricalEvent[] = hcmData.events.map((e, index) => {
   const markerId = `marker-${e.lat}-${e.lng}`;
   
-  let detailsText = e.moTa;
+  let detailsText = Array.isArray(e.moTa) ? e.moTa.join('\n\n') : e.moTa;
 
   return {
     id: e.id,

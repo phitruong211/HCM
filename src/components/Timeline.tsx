@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { events, markers, periods, type HistoricalEvent } from "@/data/events";
+import { renderFormattedText } from "@/utils/textFormatting";
 
 interface TimelineProps {
   activeEventId: string | null;
@@ -150,23 +151,7 @@ export default function Timeline({
                   )}
                 </div>
 
-                {/* Expanded Details */}
-                {isExpanded && (event.yNghia || event.ketQua) && (
-                  <div className="timeline-event-details">
-                    {event.ketQua && (
-                      <div className="timeline-event-highlight">
-                        <div className="highlight-label">Kết quả</div>
-                        <div className="highlight-content">{event.ketQua}</div>
-                      </div>
-                    )}
-                    {event.yNghia && (
-                      <div className="timeline-event-highlight">
-                        <div className="highlight-label">Ý nghĩa</div>
-                        <div className="highlight-content">{event.yNghia}</div>
-                      </div>
-                    )}
-                  </div>
-                )}
+
               </div>
             </div>
           );

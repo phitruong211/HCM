@@ -7,6 +7,7 @@ import { X, Maximize2, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { renderFormattedText } from "@/utils/textFormatting";
 
 interface EventPopupProps {
   event: HistoricalEvent;
@@ -83,10 +84,49 @@ export default function EventPopup({
 
           {/* Body */}
           <div className="event-popup-body">
-            {event.details ? (
-              <ReactMarkdown>{event.details}</ReactMarkdown>
+            {Array.isArray(event.moTa) ? (
+              <ul className="event-popup-list">
+                {event.moTa.map((item, idx) => {
+                  const colonIndex = item.indexOf(':');
+                  let label = '';
+                  let rest = item;
+                  if (colonIndex !== -1 && colonIndex < 50) {
+                    label = item.substring(0, colonIndex + 1);
+                    rest = item.substring(colonIndex + 1);
+                  }
+                  return (
+                    <li key={idx} className="event-popup-list-item">
+                      <span className="event-popup-bullet">●</span>
+                      <div className="event-popup-list-content">
+                        {label && <span className="event-popup-label">{label}</span>}
+                        {renderFormattedText(rest)}
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
             ) : (
-              <p className="event-popup-description">{event.description}</p>
+              <div className="event-popup-description">
+                {renderFormattedText(event.moTa as string)}
+              </div>
+            )}
+            
+            {/* Extra Info Boxes */}
+            {(event.yNghia || event.ketQua) && (
+              <div className="event-popup-extras">
+                {event.yNghia && (
+                  <div className="timeline-event-highlight">
+                    <div className="highlight-label">Ý nghĩa</div>
+                    <div className="highlight-content">{renderFormattedText(event.yNghia)}</div>
+                  </div>
+                )}
+                {event.ketQua && (
+                  <div className="timeline-event-highlight">
+                    <div className="highlight-label">Kết quả</div>
+                    <div className="highlight-content">{renderFormattedText(event.ketQua)}</div>
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
