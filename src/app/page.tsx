@@ -4,7 +4,10 @@ import { useState, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { events, getEventsByMarker, type HistoricalEvent } from "@/data/events";
 
-import HeroOverlay from "@/components/HeroOverlay";
+// HeroOverlay is client-side interactive; disable SSR to prevent hydration errors from browser extensions
+const HeroOverlay = dynamic(() => import("@/components/HeroOverlay"), {
+  ssr: false,
+});
 import Timeline from "@/components/Timeline";
 import EventPopup from "@/components/EventPopup";
 import ValuesModal from "@/components/ValuesModal";
@@ -182,7 +185,7 @@ export default function Home() {
   }, [navigateToEvent]);
 
   return (
-    <div className="app-container">
+    <div className="app-container" suppressHydrationWarning>
       {/* Floating Button for Values Modal */}
       {!showHero && (
         <button
