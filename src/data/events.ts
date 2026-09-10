@@ -89,7 +89,7 @@ export const events: HistoricalEvent[] = hcmData.events.map((e, index) => {
     yearLabel: e.ngay,
     sortYear: parseInt(e.ngaySort.split("-")[0], 10),
     title: e.tieuDe,
-    description: e.moTa,
+    description: detailsText,
     markerId: markerId,
     image: index < 23 ? `/media/event-${index + 1}.jpg` : `/media/event-${e.thoiKy}.jpg`, // Use specific images for first 23 events, fallback to period
     details: detailsText,
